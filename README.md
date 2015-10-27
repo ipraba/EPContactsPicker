@@ -2,6 +2,10 @@ EPContactsPicker
 ===========
 A contacts picker component for iOS. Created in swift using the new contacts framework by apple. 
 
+![Single Selection](https://raw.githubusercontent.com/ipraba/EPContactsPicker/master/Screenshots/Screen2.png)
+
+![Multi Selection](https://raw.githubusercontent.com/ipraba/EPContactsPicker/master/Screenshots/Screen3.png)
+
 
 Requirements
 ------------
