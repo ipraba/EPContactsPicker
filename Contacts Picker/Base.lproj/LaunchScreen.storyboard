@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EPContactsPicker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gdC-s6-bro">
+                                <rect key="frame" x="168" y="282" width="265" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="DfF-GE-6qn"/>
+                                    <constraint firstAttribute="width" constant="265" id="hdP-HK-dia"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts Simplified" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kfu-jy-4t1">
+                                <rect key="frame" x="233" y="321" width="134" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="h2C-Al-dJl"/>
+                                    <constraint firstAttribute="width" constant="134" id="xEt-as-3Yw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="1" green="0.7725490196" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="kfu-jy-4t1" firstAttribute="top" secondItem="gdC-s6-bro" secondAttribute="bottom" constant="2" id="2DC-kS-fb7"/>
+                            <constraint firstItem="kfu-jy-4t1" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Xbc-3v-QfV"/>
+                            <constraint firstItem="gdC-s6-bro" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="YGg-CD-OZZ"/>
+                            <constraint firstItem="gdC-s6-bro" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="b7J-bq-rGh"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9" y="405"/>
+        </scene>
+    </scenes>
+</document>
