@@ -109,7 +109,11 @@ class EPContactsPicker: UITableViewController {
         if (error == nil)
         {
             self.arrContacts = contacts
-            self.tableView.reloadData()
+            dispatch_async(dispatch_get_main_queue(), {
+                // code here
+                self.tableView.reloadData()
+            })
+
         }
         
     })
@@ -119,6 +123,7 @@ class EPContactsPicker: UITableViewController {
     if contactsStore == nil {
         //ContactStore is control for accessing the Contacts
         contactsStore = CNContactStore()
+    }
         let error = NSError(domain: "EPContactPickerErrorDomain", code: 1, userInfo: [ NSLocalizedDescriptionKey: "No Contacts Access"])
         
         switch CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
@@ -195,7 +200,7 @@ class EPContactsPicker: UITableViewController {
             break
             
         }
-    }
+    
     
   }
     
