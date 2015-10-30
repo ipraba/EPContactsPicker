@@ -17,10 +17,18 @@ Features
 EPContacts Picker provides lot of features which lets you customize the picker
 
 1. Single selection and multiselection option
-2. Making the secondary data to show as requested(Phonenumbers, Emails, Birtday and Organisation)
+2. Making the secondary data to show as requested(Phonenumbers, Emails, Birthday and Organisation)
 3. Section Indexes to easily navigate throught the contacts
 4. Showing initials when image is not available
 5. EPContact object to get the properties of the contacts
+
+Initialization
+--------------
+Init the picker by passing delegate, multiselection option and the secondary data(Phone number, Email, brithday and Organisation) to be displayed
+
+    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:false, subtitleCellType: SubtitleCellValue.Email)
+    let navigationController = UINavigationController(rootViewController: contactPickerScene)
+    self.presentViewController(navigationController, animated: true, completion: nil)
 
 Delegates
 --------
