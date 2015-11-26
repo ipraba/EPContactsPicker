@@ -32,7 +32,7 @@ iOS9+
 Swift 2.0+
 ARC
 
-For manual installtion you might have to add these frameworks in your Build Phases
+For manual installation you might have to add these frameworks in your Build Phases
 `ContactsUI.framework` and `Contacts.framework`.
 
 Features
@@ -69,6 +69,10 @@ EPContact Object
 ----------------
 
 EPContact object provides you the properties of a contact. This contains properties like displayname, initials, firstname, lastname, organisation, birthdayString etc
+
+License
+-------
+EPContactsPicker is available under the MIT license. See the [LICENSE](https://github.com/ipraba/EPContactsPicker/blob/master/LICENSE) file for more info.
 
 Contributors
 ------------
