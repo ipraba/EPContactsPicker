@@ -2,12 +2,38 @@ EPContactsPicker
 ===========
 A contacts picker component for iOS. Created in swift using the new contacts framework by apple. 
 
+
+[![Platform](https://img.shields.io/cocoapods/p/EPContactsPicker.svg?style=flat)](http://cocoapods.org/pods/EPContactsPicker)
+[![Cocoapods Compatible](https://img.shields.io/cocoapods/v/EPContactsPicker.svg?style=flat)](http://cocoadocs.org/docsets/EPContactsPicker)
+[![Swift 2.0](https://img.shields.io/badge/Swift-2.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
+
+
+Preview
+-------
 ![Single Selection](https://raw.githubusercontent.com/ipraba/EPContactsPicker/master/Screenshots/Screen2.png)    ![Multi Selection](https://raw.githubusercontent.com/ipraba/EPContactsPicker/master/Screenshots/Screen3.png)
+
+Installation
+------------
+
+####CocoaPods
+EPContactsPicker is available on CocoaPods. Just add the following to your project Podfile:
+```
+pod 'EPContactsPicker'
+use_frameworks!
+```
+####Manual Installation
+
+Just drag and drop the `EPContactsPicker` folder into your project
 
 
 Requirements
 ------------
-Requires **iOS 9,** the `ContactsUI.framework` and `Contacts.framework`.
+iOS9+
+Swift 2.0+
+ARC
+
+For manual installtion you might have to add these frameworks in your Build Phases
+`ContactsUI.framework` and `Contacts.framework`.
 
 Features
 --------
@@ -44,8 +70,7 @@ EPContact Object
 
 EPContact object provides you the properties of a contact. This contains properties like displayname, initials, firstname, lastname, organisation, birthdayString etc
 
-
-Suggestions and feedbacks are welcome 
--------------------------------------
-
+Contributors
+------------
+[@ipraba](https://github.com/ipraba)
 
