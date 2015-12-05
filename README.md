@@ -1,3 +1,7 @@
+<p align="center" >
+  <img src="EPContactsPickerLogo.jpg" alt="EPContactsPicker" title="EPContactsPicker" width="196">
+</p>
+
 EPContactsPicker
 ===========
 A contacts picker component for iOS. Created in swift using the new contacts framework by apple. 
