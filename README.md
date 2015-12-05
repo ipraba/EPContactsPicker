@@ -6,7 +6,7 @@ A contacts picker component for iOS. Created in swift using the new contacts fra
 [![Platform](https://img.shields.io/cocoapods/p/EPContactsPicker.svg?style=flat)](http://cocoapods.org/pods/EPContactsPicker)
 [![Swift 2.0](https://img.shields.io/badge/Swift-2.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/EPContactsPicker.svg?style=flat)](http://cocoadocs.org/docsets/EPContactsPicker)
-
+![CI Status](https://travis-ci.org/ipraba/EPContactsPicker.svg?branch=master)
 
 
 Preview
