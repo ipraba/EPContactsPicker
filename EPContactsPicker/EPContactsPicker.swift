@@ -256,11 +256,15 @@ class EPContactsPicker: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! EPContactCell
-
+        cell.accessoryType = UITableViewCellAccessoryType.None
         //Convert CNContact to EPContact
         if let contactsForSection = orderedContacts[sortedContactKeys[indexPath.section]]
         {
             let contact =  EPContact(contact: contactsForSection[indexPath.row])
+            if multiSelectEnabled  && selectedContacts.contains({ $0.contactId == contact.contactId }) {
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }
+            
             cell.updateContactsinUI(contact, indexPath: indexPath, subtitleType: subtitleCellValue)
             return cell
         }
