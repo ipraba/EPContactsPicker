@@ -12,7 +12,7 @@ A contacts picker component for iOS. Created in swift using the new contacts fra
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/EPContactsPicker.svg?style=flat)](http://cocoadocs.org/docsets/EPContactsPicker)
 [![CI Status](https://travis-ci.org/ipraba/EPContactsPicker.svg?branch=master)](https://travis-ci.org/ipraba/EPContactsPicker)
 [![License](https://img.shields.io/cocoapods/l/Ouroboros.svg?style=flat)](https://github.com/ipraba/EPContactsPicker/blob/master/LICENSE)
-
+[![Twitter: @HaveYouMetPrabu](https://img.shields.io/badge/contact-@HaveYouMetPrabu-blue.svg?style=flat)](https://twitter.com/HaveYouMetPrabu)
 
 Preview
 -------
