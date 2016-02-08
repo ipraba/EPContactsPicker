@@ -4,7 +4,7 @@
 
 EPContactsPicker
 ===========
-A contacts picker component for iOS. Created in swift using the new contacts framework by apple. 
+Contacts picker using new contacts framework by apple
 
 
 [![Platform](https://img.shields.io/cocoapods/p/EPContactsPicker.svg?style=flat)](http://cocoapods.org/pods/EPContactsPicker)
