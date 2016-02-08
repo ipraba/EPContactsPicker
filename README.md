@@ -4,7 +4,7 @@
 
 EPContactsPicker
 ===========
-Contacts picker using new contacts framework by apple
+Contacts picker component using new contacts framework by apple
 
 
 [![Platform](https://img.shields.io/cocoapods/p/EPContactsPicker.svg?style=flat)](http://cocoapods.org/pods/EPContactsPicker)
