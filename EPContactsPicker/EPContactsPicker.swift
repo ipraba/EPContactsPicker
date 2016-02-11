@@ -22,7 +22,7 @@ optional    func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts 
 typealias ContactsHandler = (contacts : [CNContact] , error : NSError?)  -> Void
 
 enum SubtitleCellValue{
-    case Phonenumer
+    case PhoneNumber
     case Email
     case Birthday
     case Organization
@@ -42,7 +42,7 @@ class EPContactsPicker: UITableViewController {
     var multiSelectEnabled : Bool = false //Default is single selection contact
     var selectedContacts = [EPContact]()
     
-    var subtitleCellValue = SubtitleCellValue.Phonenumer
+    var subtitleCellValue = SubtitleCellValue.PhoneNumber
     
 // MARK: - Lifecycle Methods
     override func viewDidLoad() {
