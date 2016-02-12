@@ -9,20 +9,15 @@
 import UIKit
 import Foundation
 
-class EPExtensions: NSObject {
-
-}
-
 extension String {
-    subscript (r: Range<Int>) -> String? {
+    subscript(r: Range<Int>) -> String? {
         get {
             let stringCount = self.characters.count as Int
-            if (stringCount < r.endIndex) || (stringCount < r.startIndex){
+            if (stringCount < r.endIndex) || (stringCount < r.startIndex) {
                 return nil
             }
             let startIndex = self.startIndex.advancedBy(r.startIndex)
             let endIndex = self.startIndex.advancedBy(r.endIndex - r.startIndex)
-            
             return self[Range(start: startIndex, end: endIndex)]
         }
     }
@@ -30,7 +25,6 @@ extension String {
     func containsAlphabets() -> Bool {
         //Checks if all the characters inside the string are alphabets
         let set = NSCharacterSet.letterCharacterSet()
-        return self.utf16.contains({ return set.characterIsMember($0)  })
-        
+        return self.utf16.contains( { return set.characterIsMember($0)  } )
     }
 }

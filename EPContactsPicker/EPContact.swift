@@ -9,23 +9,24 @@
 import UIKit
 import Contacts
 
-
-
-
-class EPContact: NSObject {
+public class EPContact: NSObject {
     
-    var firstName : NSString!
-    var lastName : NSString!
-    var company : NSString!
-    var thumbnailProfileImage : UIImage?
-    var profileImage : UIImage?
-    var birthday : NSDate?
-    var birthdayString : String?
-    var contactId : String?
-    var phoneNumbers = [(phoneNumber: String ,phoneLabel: String )]()
-    var emails = [(email: String ,emailLabel: String )]()
+    public var firstName: NSString!
+    public var lastName: NSString!
+    public var company: NSString!
+    public var thumbnailProfileImage: UIImage?
+    public var profileImage: UIImage?
+    public var birthday: NSDate?
+    public var birthdayString: String?
+    public var contactId: String?
+    public var phoneNumbers = [(phoneNumber: String, phoneLabel: String)]()
+    public var emails = [(email: String, emailLabel: String )]()
     
-    init (contact: CNContact)
+    override init() {
+        super.init()
+    }
+    
+    public init (contact: CNContact)
     {
         super.init()
         
@@ -35,20 +36,17 @@ class EPContact: NSObject {
         company = contact.organizationName
         contactId = contact.identifier
         
-        //If lets are used becasue there are chances that we would be accessing nil objects
-        if let thumbnailImageData = contact.thumbnailImageData
-        {
+        if let thumbnailImageData = contact.thumbnailImageData {
             thumbnailProfileImage = UIImage(data:thumbnailImageData)
         }
         
-        if let imageData = contact.imageData
-        {
+        if let imageData = contact.imageData {
             profileImage = UIImage(data:imageData)
         }
         
         if let birthdayDate = contact.birthday {
-            birthday = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)?.dateFromComponents(birthdayDate)
             
+            birthday = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)?.dateFromComponents(birthdayDate)
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = EPGlobalConstants.Strings.birdtdayDateFormat
             //Example Date Formats:  Oct 4, Sep 18, Mar 9
@@ -64,22 +62,18 @@ class EPContact: NSObject {
             let email = emailAddress.value as! String
             emails.append((email,emailAddress.label))
         }
-
-    
     }
     
-    func displayName() -> String {
+    public func displayName() -> String {
         return "\(firstName) \(lastName)"
     }
     
-    func contactInitials() -> String {
+    public func contactInitials() -> String {
         var initials = String()
-        if firstName.length > 0
-        {
+        if firstName.length > 0 {
             initials.appendContentsOf(firstName.substringToIndex(1))
         }
-        if lastName.length > 0
-        {
+        if lastName.length > 0 {
             initials.appendContentsOf(lastName.substringToIndex(1))
         }
         return initials
