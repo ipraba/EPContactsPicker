@@ -19,9 +19,6 @@ DESC
   s.requires_arc = true
   s.source_files = 'EPContactsPicker'
   s.frameworks = 'Contacts', 'ContactsUI'
-  s.resource_bundles = {
-    'EPContactsPicker' => [
-         'EPContactsPicker/*.xib'
-    ]
-}
+  s.resources        = ["EPContactsPicker/EPContactCell.xib"]
+
 end

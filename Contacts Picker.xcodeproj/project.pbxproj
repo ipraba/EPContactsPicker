@@ -11,14 +11,14 @@
 		F4C1C9491BDF8AB7001AA643 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9481BDF8AB7001AA643 /* Assets.xcassets */; };
 		F4C1C94C1BDF8AB7001AA643 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C94A1BDF8AB7001AA643 /* LaunchScreen.storyboard */; };
 		F4C1C9571BDF8AB7001AA643 /* Contacts_PickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9561BDF8AB7001AA643 /* Contacts_PickerTests.swift */; };
-		F4C1C9711BDF8BBA001AA643 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9701BDF8BBA001AA643 /* ViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		F4C1C9741BDF8BE3001AA643 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9721BDF8BE3001AA643 /* Main.storyboard */; settings = {ASSET_TAGS = (); }; };
-		F4C1C97C1BDF9227001AA643 /* EPConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9761BDF9227001AA643 /* EPConstants.swift */; settings = {ASSET_TAGS = (); }; };
-		F4C1C97D1BDF9227001AA643 /* EPContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9771BDF9227001AA643 /* EPContact.swift */; settings = {ASSET_TAGS = (); }; };
-		F4C1C97E1BDF9227001AA643 /* EPContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9781BDF9227001AA643 /* EPContactCell.swift */; settings = {ASSET_TAGS = (); }; };
-		F4C1C97F1BDF9227001AA643 /* EPContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9791BDF9227001AA643 /* EPContactCell.xib */; settings = {ASSET_TAGS = (); }; };
-		F4C1C9801BDF9227001AA643 /* EPContactsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C97A1BDF9227001AA643 /* EPContactsPicker.swift */; settings = {ASSET_TAGS = (); }; };
-		F4C1C9811BDF9227001AA643 /* EPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C97B1BDF9227001AA643 /* EPExtensions.swift */; settings = {ASSET_TAGS = (); }; };
+		F4C1C9711BDF8BBA001AA643 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9701BDF8BBA001AA643 /* ViewController.swift */; };
+		F4C1C9741BDF8BE3001AA643 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9721BDF8BE3001AA643 /* Main.storyboard */; };
+		F4C1C97C1BDF9227001AA643 /* EPConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9761BDF9227001AA643 /* EPConstants.swift */; };
+		F4C1C97D1BDF9227001AA643 /* EPContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9771BDF9227001AA643 /* EPContact.swift */; };
+		F4C1C97E1BDF9227001AA643 /* EPContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9781BDF9227001AA643 /* EPContactCell.swift */; };
+		F4C1C97F1BDF9227001AA643 /* EPContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9791BDF9227001AA643 /* EPContactCell.xib */; };
+		F4C1C9801BDF9227001AA643 /* EPContactsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C97A1BDF9227001AA643 /* EPContactsPicker.swift */; };
+		F4C1C9811BDF9227001AA643 /* EPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C97B1BDF9227001AA643 /* EPExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -419,6 +419,7 @@
 				F4C1C95D1BDF8AB7001AA643 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F4C1C95E1BDF8AB7001AA643 /* Build configuration list for PBXNativeTarget "Contacts PickerTests" */ = {
 			isa = XCConfigurationList;
@@ -427,6 +428,7 @@
 				F4C1C9601BDF8AB7001AA643 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
