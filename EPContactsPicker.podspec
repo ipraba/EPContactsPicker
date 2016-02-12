@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "EPContactsPicker"
-  s.version          = "1.0.1"
+  s.version          = "1.0.2"
   s.summary          = "A contacts picker component for iOS written in swift using new contacts framwork"
   s.description      = <<-DESC
 Features
@@ -17,8 +17,8 @@ DESC
   s.source           = { :git => "https://github.com/ipraba/EPContactsPicker.git", :tag => s.version.to_s }
   s.platform     = :ios, '9.0'
   s.requires_arc = true
-  s.source_files = 'EPContactsPicker'
+  s.source_files = 'Pods'
   s.frameworks = 'Contacts', 'ContactsUI'
-  s.resources        = ["EPContactsPicker/EPContactCell.xib"]
+  s.resources        = ["Pods/EPContactCell.xib"]
 
 end
