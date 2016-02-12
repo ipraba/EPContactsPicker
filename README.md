@@ -1,13 +1,18 @@
+<p align="center" >
+  <img src="EPContactsPickerLogo.jpg" alt="EPContactsPicker" title="EPContactsPicker" width="196">
+</p>
+
 EPContactsPicker
 ===========
-A contacts picker component for iOS. Created in swift using the new contacts framework by apple. 
+Contacts picker component using new contacts framework by apple
 
 
 [![Platform](https://img.shields.io/cocoapods/p/EPContactsPicker.svg?style=flat)](http://cocoapods.org/pods/EPContactsPicker)
 [![Swift 2.0](https://img.shields.io/badge/Swift-2.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
-[![Cocoapods Compatible](https://img.shields.io/cocoapods/v/EPContactsPicker.svg?style=flat)](http://cocoadocs.org/docsets/EPContactsPicker)
-![CI Status](https://travis-ci.org/ipraba/EPContactsPicker.svg?branch=master)
-
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/EPContactsPicker.svg?style=flat)](http://cocoadocs.org/docsets/EPContactsPicker)
+[![CI Status](https://travis-ci.org/ipraba/EPContactsPicker.svg?branch=master)](https://travis-ci.org/ipraba/EPContactsPicker)
+[![License](https://img.shields.io/cocoapods/l/Ouroboros.svg?style=flat)](https://github.com/ipraba/EPContactsPicker/blob/master/LICENSE)
+[![Twitter: @HaveYouMetPrabu](https://img.shields.io/badge/contact-@HaveYouMetPrabu-blue.svg?style=flat)](https://twitter.com/HaveYouMetPrabu)
 
 Preview
 -------
