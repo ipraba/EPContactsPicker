@@ -47,10 +47,11 @@ Features
 EPContacts Picker provides lot of features which lets you customize the picker
 
 1. Single selection and multiselection option
-2. Making the secondary data to show as requested(Phonenumbers, Emails, Birthday and Organisation)
-3. Section Indexes to easily navigate throught the contacts
-4. Showing initials when image is not available
-5. EPContact object to get the properties of the contacts
+2. Search Contacts
+3. Making the secondary data to show as requested(Phonenumbers, Emails, Birthday and Organisation)
+4. Section Indexes to easily navigate throught the contacts
+5. Showing initials when image is not available
+6. EPContact object to get the properties of the contacts
 
 Initialization
 --------------
