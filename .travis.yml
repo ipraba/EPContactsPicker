@@ -4,9 +4,9 @@ xcode_project: Contacts Picker.xcodeproj  # https://docs.travis-ci.com/user/lang
 xcode_scheme: Contacts Picker             # https://docs.travis-ci.com/user/languages/objective-c#Build-Matrix
 xcode_sdk: iphonesimulator                # iphonesimulator9.3
 before_install:
-  - brew update
-  - brew reinstall --HEAD xctool
-  - xctool version
+  - xcodebuild -version
 script:
-  - xctool clean build
-  - xctool test -test-sdk iphonesimulator -resetSimulator
+  - set -o pipefail
+  - COMMAND="xcodebuild -project \"$TRAVIS_XCODE_PROJECT\" -scheme \"$TRAVIS_XCODE_SCHEME\" -destination \"platform=iOS Simulator,name=iPhone 6s,OS=9.3\""
+  - eval $COMMAND clean build &>/dev/null
+  - eval $COMMAND test | xcpretty
