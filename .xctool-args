@@ -1,0 +1,6 @@
+[
+	"-project", "Contacts Picker.xcodeproj",
+	"-scheme", "Contacts Picker",
+	"-sdk", "iphonesimulator",
+	"-destination", "platform=iOS Simulator,name=iPhone 6s,OS=latest",
+]
