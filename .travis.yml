@@ -9,4 +9,4 @@ before_install:
   - xctool version
 script:
   - xctool clean build
-  - xctool test
+  - xctool test -test-sdk iphonesimulator -resetSimulator
