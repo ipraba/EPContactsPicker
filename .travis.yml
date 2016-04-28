@@ -6,7 +6,8 @@ xcode_sdk: iphonesimulator                # iphonesimulator9.3
 before_install:
   - xcodebuild -version
 script:
-  - set -o pipefail
-  - COMMAND="xcodebuild -project \"$TRAVIS_XCODE_PROJECT\" -scheme \"$TRAVIS_XCODE_SCHEME\" -destination \"platform=iOS Simulator,name=iPhone 6s,OS=9.3\""
+  - DESTINATION="-destination \"platform=iOS Simulator,name=iPhone 6s,OS=latest\""
+  - COMMAND="xcodebuild -project \"$TRAVIS_XCODE_PROJECT\" -scheme \"$TRAVIS_XCODE_SCHEME\" $DESTINATION"
   - eval $COMMAND clean build &>/dev/null
+  - set -o pipefail
   - eval $COMMAND test | xcpretty
