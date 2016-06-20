@@ -21,7 +21,7 @@ import Contacts
 typealias ContactsHandler = (contacts : [CNContact] , error : NSError?) -> Void
 
 public enum SubtitleCellValue{
-    case PhoneNumer
+    case PhoneNumber
     case Email
     case Birthday
     case Organization
@@ -40,7 +40,7 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
     var selectedContacts = [EPContact]()
     var filteredContacts = [CNContact]()
     
-    var subtitleCellValue = SubtitleCellValue.PhoneNumer
+    var subtitleCellValue = SubtitleCellValue.PhoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
     // MARK: - Lifecycle Methods

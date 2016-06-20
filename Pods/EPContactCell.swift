@@ -59,7 +59,7 @@ class EPContactCell: UITableViewCell {
         
         switch subtitleType {
             
-        case SubtitleCellValue.PhoneNumer:
+        case SubtitleCellValue.PhoneNumber:
             let phoneNumberCount = contact.phoneNumbers.count
             
             if phoneNumberCount == 1  {
