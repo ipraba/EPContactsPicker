@@ -317,17 +317,19 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
             do {
                 filteredContacts = try store.unifiedContactsMatchingPredicate(predicate,
                     keysToFetch: allowedContactKeys())
-                print("\(filteredContacts.count) count")
+                //print("\(filteredContacts.count) count")
+                
                 self.tableView.reloadData()
+                
             }
             catch {
-                print("Handle the error please")
+                print("Error!")
             }
         }
     }
     
     public func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        searchBar.text = ""
+        
         dispatch_async(dispatch_get_main_queue(), {
             self.tableView.reloadData()
         })
