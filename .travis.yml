@@ -1,7 +1,13 @@
-language: objective-c  #1
-osx_image: xcode7.3 #2
-xcode_project: Contacts Picker.xcodeproj #3
-xcode_scheme: Contacts Picker #4
-xcode_sdk: iphonesimulator #5
+language: objective-c                     # https://docs.travis-ci.com/user/languages/objective-c
+osx_image: xcode7.3                       # https://docs.travis-ci.com/user/osx-ci-environment/#Xcode-7.3
+xcode_project: Contacts Picker.xcodeproj  # https://docs.travis-ci.com/user/languages/objective-c#Default-Test-Script
+xcode_scheme: Contacts Picker             # https://docs.travis-ci.com/user/languages/objective-c#Build-Matrix
+xcode_sdk: iphonesimulator                # iphonesimulator9.3
+before_install:
+  - xcodebuild -version
 script:
-- xcodebuild -project "Contacts Picker.xcodeproj" -scheme "Contacts Picker" -sdk iphonesimulator build test
+  - DESTINATION="-destination \"platform=iOS Simulator,name=iPhone 6s,OS=latest\""
+  - COMMAND="xcodebuild -project \"$TRAVIS_XCODE_PROJECT\" -scheme \"$TRAVIS_XCODE_SCHEME\" $DESTINATION"
+  - eval $COMMAND clean build &>/dev/null
+  - set -o pipefail
+  - eval $COMMAND test | xcpretty
