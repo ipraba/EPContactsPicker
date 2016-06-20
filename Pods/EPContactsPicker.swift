@@ -275,7 +275,7 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
     override public func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
         if resultSearchController.active { return 0 }
         tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: index), atScrollPosition: UITableViewScrollPosition.Top , animated: false)        
-        return EPGlobalConstants.Arrays.alphabets.indexOf(title)!
+        return sortedContactKeys.indexOf(title)!
     }
     
     override  public func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
