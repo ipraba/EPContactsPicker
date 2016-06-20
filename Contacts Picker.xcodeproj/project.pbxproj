@@ -121,7 +121,8 @@
 				F4C1C97A1BDF9227001AA643 /* EPContactsPicker.swift */,
 				F4C1C97B1BDF9227001AA643 /* EPExtensions.swift */,
 			);
-			path = EPContactsPicker;
+			name = EPContactsPicker;
+			path = Pods;
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */

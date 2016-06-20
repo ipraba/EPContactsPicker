@@ -48,8 +48,7 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.title = EPGlobalConstants.Strings.contactsTitle
-
-        let nib = UINib(nibName: "EPContactCell", bundle: NSBundle(forClass: EPContactsPicker.self))
+        let nib = UINib(nibName: "EPContactCell", bundle: NSBundle.mainBundle())
         tableView.registerNib(nib, forCellReuseIdentifier: "Cell")
         
         inititlizeBarButtons()
@@ -70,11 +69,11 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
     }
     
     func inititlizeBarButtons() {
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "onTouchCancelButton")
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: #selector(onTouchCancelButton))
         self.navigationItem.leftBarButtonItem = cancelButton
         
         if multiSelectEnabled {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "onTouchDoneButton")
+            let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(onTouchDoneButton))
             self.navigationItem.rightBarButtonItem = doneButton
             
         }
