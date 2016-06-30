@@ -94,7 +94,8 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
         }
         else {
             
-            assertionFailure("Could not load bundle path")
+            let cellNib = UINib(nibName: EPGlobalConstants.Strings.cellNibIdentifier, bundle: nil)
+            tableView.registerNib(cellNib, forCellReuseIdentifier: "Cell")
         }
     }
 
