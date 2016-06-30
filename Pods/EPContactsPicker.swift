@@ -48,12 +48,32 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.title = EPGlobalConstants.Strings.contactsTitle
-        let nib = UINib(nibName: "EPContactCell", bundle: NSBundle.mainBundle())
-        tableView.registerNib(nib, forCellReuseIdentifier: "Cell")
+
+        registerContactCell()
         
         inititlizeBarButtons()
         initializeSearchBar()
         reloadContacts()
+    }
+    
+    private func registerContactCell() {
+        
+        let podBundle = NSBundle(forClass: self.classForCoder)
+        if let bundleURL = podBundle.URLForResource(EPGlobalConstants.Strings.bundleIdentifier, withExtension: "bundle") {
+            
+            if let bundle = NSBundle(URL: bundleURL) {
+                
+                let cellNib = UINib(nibName: EPGlobalConstants.Strings.cellNibIdentifier, bundle: bundle)
+                tableView.registerNib(cellNib, forCellReuseIdentifier: "Cell")
+            }
+            else {
+                assertionFailure("Could not load bundle")
+            }
+        }
+        else {
+            
+            assertionFailure("Could not load bundle path")
+        }
     }
     
     func initializeSearchBar() {
