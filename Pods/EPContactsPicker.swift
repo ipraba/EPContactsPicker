@@ -50,30 +50,9 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
         self.title = EPGlobalConstants.Strings.contactsTitle
 
         registerContactCell()
-        
         inititlizeBarButtons()
         initializeSearchBar()
         reloadContacts()
-    }
-    
-    private func registerContactCell() {
-        
-        let podBundle = NSBundle(forClass: self.classForCoder)
-        if let bundleURL = podBundle.URLForResource(EPGlobalConstants.Strings.bundleIdentifier, withExtension: "bundle") {
-            
-            if let bundle = NSBundle(URL: bundleURL) {
-                
-                let cellNib = UINib(nibName: EPGlobalConstants.Strings.cellNibIdentifier, bundle: bundle)
-                tableView.registerNib(cellNib, forCellReuseIdentifier: "Cell")
-            }
-            else {
-                assertionFailure("Could not load bundle")
-            }
-        }
-        else {
-            
-            assertionFailure("Could not load bundle path")
-        }
     }
     
     func initializeSearchBar() {
@@ -96,6 +75,26 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
             let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(onTouchDoneButton))
             self.navigationItem.rightBarButtonItem = doneButton
             
+        }
+    }
+    
+    private func registerContactCell() {
+        
+        let podBundle = NSBundle(forClass: self.classForCoder)
+        if let bundleURL = podBundle.URLForResource(EPGlobalConstants.Strings.bundleIdentifier, withExtension: "bundle") {
+            
+            if let bundle = NSBundle(URL: bundleURL) {
+                
+                let cellNib = UINib(nibName: EPGlobalConstants.Strings.cellNibIdentifier, bundle: bundle)
+                tableView.registerNib(cellNib, forCellReuseIdentifier: "Cell")
+            }
+            else {
+                assertionFailure("Could not load bundle")
+            }
+        }
+        else {
+            
+            assertionFailure("Could not load bundle path")
         }
     }
 
