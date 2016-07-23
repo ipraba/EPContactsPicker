@@ -10,12 +10,18 @@ import UIKit
 import Contacts
 
 
-@objc public protocol EPPickerDelegate {
-    optional    func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
-    optional    func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
-    optional    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
-    optional    func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+public protocol EPPickerDelegate {
+	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
+    func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
+	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+}
 
+public extension EPPickerDelegate {
+	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError) { }
+	func epContactPicker(_: EPContactsPicker, didCancel error: NSError) { }
+	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
+	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
 }
 
 typealias ContactsHandler = (contacts : [CNContact] , error : NSError?) -> Void
@@ -151,7 +157,7 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
                 
                 let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertControllerStyle.Alert)
                 let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {  action in
-                    self.contactDelegate?.epContactPicker!(self, didContactFetchFailed: error)
+                    self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
                     completion(contacts: [], error: error)
                     self.dismissViewControllerAnimated(true, completion: nil)
                 })
@@ -283,7 +289,7 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
         }
         else {
             //Single selection code
-            contactDelegate?.epContactPicker!(self, didSelectContact: selectedContact)
+            contactDelegate?.epContactPicker(self, didSelectContact: selectedContact)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -311,12 +317,12 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
     // MARK: - Button Actions
     
     func onTouchCancelButton() {
-        contactDelegate?.epContactPicker!(self, didCancel: NSError(domain: "EPContactPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
+        contactDelegate?.epContactPicker(self, didCancel: NSError(domain: "EPContactPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     func onTouchDoneButton() {
-        contactDelegate?.epContactPicker!(self, didSelectMultipleContacts: selectedContacts)
+        contactDelegate?.epContactPicker(self, didSelectMultipleContacts: selectedContacts)
         dismissViewControllerAnimated(true, completion: nil)
     }
     
