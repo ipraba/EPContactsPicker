@@ -289,8 +289,12 @@ public class EPContactsPicker: UITableViewController, UISearchResultsUpdating, U
         }
         else {
             //Single selection code
-            contactDelegate?.epContactPicker(self, didSelectContact: selectedContact)
-            self.dismissViewControllerAnimated(true, completion: nil)
+			resultSearchController.active = false
+			self.dismissViewControllerAnimated(true, completion: {
+				dispatch_async(dispatch_get_main_queue()) {
+					self.contactDelegate?.epContactPicker(self, didSelectContact: selectedContact)
+				}
+			})
         }
     }
     
