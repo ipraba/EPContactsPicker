@@ -24,7 +24,7 @@ class ViewController: UIViewController, EPPickerDelegate {
     
     let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:true, subtitleCellType: SubtitleCellValue.Email)
     let navigationController = UINavigationController(rootViewController: contactPickerScene)
-    self.presentViewController(navigationController, animated: true, completion: nil)
+    self.present(navigationController, animated: true, completion: nil)
     
   }
     
