@@ -53,17 +53,21 @@ public class EPContact: NSObject {
             birthdayString = dateFormatter.stringFromDate(birthday!)
         }
         
-        for phoneNumber in contact.phoneNumbers {
-            let phone = phoneNumber.value as! CNPhoneNumber
-            phoneNumbers.append((phone.stringValue,phoneNumber.label))
-        }
-
-        for emailAddress in contact.emailAddresses {
-            let email = emailAddress.value as! String
-            emails.append((email,emailAddress.label))
-        }
+		for phoneNumber in contact.phoneNumbers {
+			guard let phone = phoneNumber.value as? CNPhoneNumber,
+				let phoneLabel = phoneNumber.label else { continue }
+			
+			phoneNumbers.append((phone.stringValue,phoneLabel))
+		}
+		
+		for emailAddress in contact.emailAddresses {
+			guard let email = emailAddress.value as? String,
+				let emailLabel = emailAddress.label else { continue }
+			
+			emails.append((email,emailLabel))
+		}
     }
-    
+	
     public func displayName() -> String {
         return "\(firstName) \(lastName)"
     }
