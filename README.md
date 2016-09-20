@@ -24,15 +24,8 @@ Preview
 ## CocoaPods ##
 EPContactsPicker is available on CocoaPods. Just add the following to your project Podfile:
 
-### Swift 3 ###
-```ruby
-pod 'EPContactsPicker', '~> 2.0' :git => 'https://github.com/Sorix/EPContactsPicker'
-```
-
-### Swift 2.3 ###
-```ruby
-pod 'EPContactsPicker', '~> 1.0' :git => 'https://github.com/Sorix/EPContactsPicker'
-```
+* Swift 3 `pod 'EPContactsPicker', '~> 2.0' :git => 'https://github.com/Sorix/EPContactsPicker'`
+* Swift 2.3 `pod 'EPContactsPicker', '~> 1.0' :git => 'https://github.com/Sorix/EPContactsPicker'`
 
 ## Manual Installation ##
 
@@ -86,7 +79,7 @@ EPContact object provides you the properties of a contact. This contains propert
 EPContactsPicker is available under the MIT license. See the [LICENSE](https://github.com/ipraba/EPContactsPicker/blob/master/LICENSE) file for more info.
 
 ## Contributors ##
-------------
+
 [@ipraba](https://github.com/ipraba)
 [@Sorix](https://github.com/Sorix)
 
