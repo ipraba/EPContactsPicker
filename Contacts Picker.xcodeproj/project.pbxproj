@@ -29,8 +29,6 @@
 		F4C1C9481BDF8AB7001AA643 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F4C1C94B1BDF8AB7001AA643 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4C1C94D1BDF8AB7001AA643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F4C1C9561BDF8AB7001AA643 /* Contacts_PickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts_PickerTests.swift; sourceTree = "<group>"; };
-		F4C1C9581BDF8AB7001AA643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4C1C9701BDF8BBA001AA643 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = "Contacts Picker/ViewController.swift"; sourceTree = SOURCE_ROOT; };
 		F4C1C9731BDF8BE3001AA643 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F4C1C9761BDF9227001AA643 /* EPConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPConstants.swift; sourceTree = "<group>"; };
@@ -58,7 +56,6 @@
 				4B7552C01CD28ADA00C638F1 /* .travis.yml */,
 				E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */,
 				F4C1C9401BDF8AB7001AA643 /* Contacts Picker */,
-				F4C1C9551BDF8AB7001AA643 /* Contacts PickerTests */,
 				F4C1C93F1BDF8AB7001AA643 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -83,15 +80,6 @@
 				F4C1C94D1BDF8AB7001AA643 /* Info.plist */,
 			);
 			path = "Contacts Picker";
-			sourceTree = "<group>";
-		};
-		F4C1C9551BDF8AB7001AA643 /* Contacts PickerTests */ = {
-			isa = PBXGroup;
-			children = (
-				F4C1C9561BDF8AB7001AA643 /* Contacts_PickerTests.swift */,
-				F4C1C9581BDF8AB7001AA643 /* Info.plist */,
-			);
-			path = "Contacts PickerTests";
 			sourceTree = "<group>";
 		};
 		F4C1C9751BDF9227001AA643 /* EPContactsPicker */ = {
