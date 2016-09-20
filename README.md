@@ -9,6 +9,7 @@ Contacts picker component using new contacts framework by apple
 
 [![Platform](https://img.shields.io/cocoapods/p/EPContactsPicker.svg?style=flat)](http://cocoapods.org/pods/EPContactsPicker)
 [![Swift 2.3](https://img.shields.io/badge/Swift-2.3-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Swift 3](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/EPContactsPicker.svg?style=flat)](http://cocoadocs.org/docsets/EPContactsPicker)
 [![CI Status](https://travis-ci.org/ipraba/EPContactsPicker.svg?branch=master)](https://travis-ci.org/ipraba/EPContactsPicker)
 [![License](https://img.shields.io/cocoapods/l/Ouroboros.svg?style=flat)](https://github.com/ipraba/EPContactsPicker/blob/master/LICENSE)
@@ -18,31 +19,35 @@ Preview
 -------
 ![Single Selection](https://raw.githubusercontent.com/ipraba/EPContactsPicker/master/Screenshots/Screen2.png)    ![Multi Selection](https://raw.githubusercontent.com/ipraba/EPContactsPicker/master/Screenshots/Screen3.png)
 
-Installation
-------------
+# Installation #
 
-####CocoaPods
+## CocoaPods ##
 EPContactsPicker is available on CocoaPods. Just add the following to your project Podfile:
+
+### Swift 3 ###
+```ruby
+pod 'EPContactsPicker', '~> 2.0' :git => 'https://github.com/Sorix/EPContactsPicker'
 ```
-pod 'EPContactsPicker'
-use_frameworks!
+
+### Swift 2.3 ###
+```ruby
+pod 'EPContactsPicker', '~> 1.0' :git => 'https://github.com/Sorix/EPContactsPicker'
 ```
-####Manual Installation
+
+## Manual Installation ##
 
 Just drag and drop the `EPContactsPicker` folder into your project
 
+# Requirements #
 
-Requirements
-------------
-iOS9+
-Swift 2.0+
-ARC
+* iOS9+
+* Swift 2.0+
+* ARC
 
 For manual installation you might have to add these frameworks in your Build Phases
 `ContactsUI.framework` and `Contacts.framework`.
 
-Features
---------
+# Features #
 
 EPContacts Picker provides lot of features which lets you customize the picker
 
@@ -53,35 +58,35 @@ EPContacts Picker provides lot of features which lets you customize the picker
 5. Showing initials when image is not available
 6. EPContact object to get the properties of the contacts
 
-Initialization
---------------
+# Initialization #
+
 Init the picker by passing delegate, multiselection option and the secondary data(Phone number, Email, brithday and Organisation) to be displayed
 
     let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:false, subtitleCellType: SubtitleCellValue.Email)
     let navigationController = UINavigationController(rootViewController: contactPickerScene)
     self.presentViewController(navigationController, animated: true, completion: nil)
 
-Delegates
---------
+# Delegates #
+
 EPContactsPicker provides you four delegates for getting the callbacks on the picker
 
 ```swift
-optional    func epContactPicker(_: EPContactsPicker, didContactFetchFailed error : NSError)
-optional    func epContactPicker(_: EPContactsPicker, didCancel error : NSError)
-optional    func epContactPicker(_: EPContactsPicker, didSelectContact contact : EPContact)
-optional    func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts : [EPContact])
+func epContactPicker(_: EPContactsPicker, didContactFetchFailed error : NSError)
+func epContactPicker(_: EPContactsPicker, didCancel error : NSError)
+func epContactPicker(_: EPContactsPicker, didSelectContact contact : EPContact)
+func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts : [EPContact])
 ```
 
-EPContact Object
-----------------
+# EPContact Object #
 
 EPContact object provides you the properties of a contact. This contains properties like displayname, initials, firstname, lastname, organisation, birthdayString etc
 
-License
--------
+## License ##
+
 EPContactsPicker is available under the MIT license. See the [LICENSE](https://github.com/ipraba/EPContactsPicker/blob/master/LICENSE) file for more info.
 
-Contributors
+## Contributors ##
 ------------
 [@ipraba](https://github.com/ipraba)
+[@Sorix](https://github.com/Sorix)
 

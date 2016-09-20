@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E210822E1D916C6F002CCAD5 /* EPContactsPicker.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */; };
+		E21082301D916DDB002CCAD5 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E210822F1D916DDB002CCAD5 /* README.md */; };
 		F4C1C9421BDF8AB7001AA643 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9411BDF8AB7001AA643 /* AppDelegate.swift */; };
 		F4C1C9491BDF8AB7001AA643 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9481BDF8AB7001AA643 /* Assets.xcassets */; };
 		F4C1C94C1BDF8AB7001AA643 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C94A1BDF8AB7001AA643 /* LaunchScreen.storyboard */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		4B7552C01CD28ADA00C638F1 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EPContactsPicker.podspec; sourceTree = "<group>"; };
+		E210822F1D916DDB002CCAD5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F4C1C93E1BDF8AB7001AA643 /* Contacts Picker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Contacts Picker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C1C9411BDF8AB7001AA643 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4C1C9481BDF8AB7001AA643 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			children = (
 				4B7552C01CD28ADA00C638F1 /* .travis.yml */,
 				E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */,
+				E210822F1D916DDB002CCAD5 /* README.md */,
 				F4C1C9401BDF8AB7001AA643 /* Contacts Picker */,
 				F4C1C93F1BDF8AB7001AA643 /* Products */,
 			);
@@ -176,6 +179,7 @@
 				F4C1C97C1BDF9227001AA643 /* EPConstants.swift in Sources */,
 				F4C1C97E1BDF9227001AA643 /* EPContactCell.swift in Sources */,
 				F4C1C97D1BDF9227001AA643 /* EPContact.swift in Sources */,
+				E21082301D916DDB002CCAD5 /* README.md in Sources */,
 				F4C1C9811BDF9227001AA643 /* EPExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
