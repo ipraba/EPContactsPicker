@@ -9,18 +9,18 @@
 import UIKit
 import Contacts
 
-public class EPContact: NSObject {
+open class EPContact: NSObject {
     
-    public var firstName: NSString!
-    public var lastName: NSString!
-    public var company: NSString!
-    public var thumbnailProfileImage: UIImage?
-    public var profileImage: UIImage?
-    public var birthday: NSDate?
-    public var birthdayString: String?
-    public var contactId: String?
-    public var phoneNumbers = [(phoneNumber: String, phoneLabel: String)]()
-    public var emails = [(email: String, emailLabel: String )]()
+    open var firstName: NSString!
+    open var lastName: NSString!
+    open var company: NSString!
+    open var thumbnailProfileImage: UIImage?
+    open var profileImage: UIImage?
+    open var birthday: Date?
+    open var birthdayString: String?
+    open var contactId: String?
+    open var phoneNumbers = [(phoneNumber: String, phoneLabel: String)]()
+    open var emails = [(email: String, emailLabel: String )]()
     
     override init() {
         super.init()
@@ -31,9 +31,9 @@ public class EPContact: NSObject {
         super.init()
         
         //VERY IMPORTANT: Make sure you have all the keys accessed below in the fetch request
-        firstName = contact.givenName
-        lastName = contact.familyName
-        company = contact.organizationName
+        firstName = contact.givenName as NSString!
+        lastName = contact.familyName as NSString!
+        company = contact.organizationName as NSString!
         contactId = contact.identifier
         
         if let thumbnailImageData = contact.thumbnailImageData {
@@ -46,35 +46,35 @@ public class EPContact: NSObject {
         
         if let birthdayDate = contact.birthday {
             
-            birthday = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)?.dateFromComponents(birthdayDate)
-            let dateFormatter = NSDateFormatter()
+            birthday = Calendar(identifier: Calendar.Identifier.gregorian).date(from: birthdayDate)
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = EPGlobalConstants.Strings.birdtdayDateFormat
             //Example Date Formats:  Oct 4, Sep 18, Mar 9
-            birthdayString = dateFormatter.stringFromDate(birthday!)
+            birthdayString = dateFormatter.string(from: birthday!)
         }
         
         for phoneNumber in contact.phoneNumbers {
-            let phone = phoneNumber.value as! CNPhoneNumber
-            phoneNumbers.append((phone.stringValue,phoneNumber.label))
+            let phone = phoneNumber.value 
+            phoneNumbers.append((phone.stringValue,phoneNumber.label!))
         }
 
         for emailAddress in contact.emailAddresses {
-            let email = emailAddress.value as! String
-            emails.append((email,emailAddress.label))
+            let email = emailAddress.value as String
+            emails.append((email,emailAddress.label!))
         }
     }
     
-    public func displayName() -> String {
+    open func displayName() -> String {
         return "\(firstName) \(lastName)"
     }
     
-    public func contactInitials() -> String {
+    open func contactInitials() -> String {
         var initials = String()
         if firstName.length > 0 {
-            initials.appendContentsOf(firstName.substringToIndex(1))
+            initials.append(firstName.substring(to: 1))
         }
         if lastName.length > 0 {
-            initials.appendContentsOf(lastName.substringToIndex(1))
+            initials.append(lastName.substring(to: 1))
         }
         return initials
     }

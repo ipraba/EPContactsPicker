@@ -20,11 +20,11 @@ class ViewController: UIViewController, EPPickerDelegate {
     // Dispose of any resources that can be recreated.
   }
 
-  @IBAction func onTouchShowMeContactsButton(sender: AnyObject) {
+  @IBAction func onTouchShowMeContactsButton(_ sender: AnyObject) {
     
-    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:true, subtitleCellType: SubtitleCellValue.Email)
+    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:true, subtitleCellType: SubtitleCellValue.email)
     let navigationController = UINavigationController(rootViewController: contactPickerScene)
-    self.presentViewController(navigationController, animated: true, completion: nil)
+    self.present(navigationController, animated: true, completion: nil)
     
   }
     
