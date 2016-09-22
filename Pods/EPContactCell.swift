@@ -22,44 +22,44 @@ class EPContactCell: UITableViewCell {
         
         super.awakeFromNib()
         // Initialization code
-        selectionStyle = UITableViewCellSelectionStyle.None
+        selectionStyle = UITableViewCellSelectionStyle.none
         contactContainerView.layer.masksToBounds = true
         contactContainerView.layer.cornerRadius = contactContainerView.frame.size.width/2
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
-    func updateInitialsColorForIndexPath(indexpath: NSIndexPath) {
+    func updateInitialsColorForIndexPath(_ indexpath: IndexPath) {
         //Applies color to Initial Label
         let colorArray = [EPGlobalConstants.Colors.amethystColor,EPGlobalConstants.Colors.asbestosColor,EPGlobalConstants.Colors.emeraldColor,EPGlobalConstants.Colors.peterRiverColor,EPGlobalConstants.Colors.pomegranateColor,EPGlobalConstants.Colors.pumpkinColor,EPGlobalConstants.Colors.sunflowerColor]
-        let randomValue = (indexpath.row + indexpath.section) % colorArray.count
+        let randomValue = ((indexpath as NSIndexPath).row + (indexpath as NSIndexPath).section) % colorArray.count
         contactInitialLabel.backgroundColor = colorArray[randomValue]
     }
  
-    func updateContactsinUI(contact: EPContact, indexPath: NSIndexPath, subtitleType: SubtitleCellValue) {
+    func updateContactsinUI(_ contact: EPContact, indexPath: IndexPath, subtitleType: SubtitleCellValue) {
         self.contact = contact
         //Update all UI in the cell here
         self.contactTextLabel?.text = contact.displayName()
         updateSubtitleBasedonType(subtitleType, contact: contact)
         if contact.thumbnailProfileImage != nil {
             self.contactImageView?.image = contact.thumbnailProfileImage
-            self.contactImageView.hidden = false
-            self.contactInitialLabel.hidden = true
+            self.contactImageView.isHidden = false
+            self.contactInitialLabel.isHidden = true
         } else {
             self.contactInitialLabel.text = contact.contactInitials()
             updateInitialsColorForIndexPath(indexPath)
-            self.contactImageView.hidden = true
-            self.contactInitialLabel.hidden = false
+            self.contactImageView.isHidden = true
+            self.contactInitialLabel.isHidden = false
         }
     }
     
-    func updateSubtitleBasedonType(subtitleType: SubtitleCellValue , contact: EPContact) {
+    func updateSubtitleBasedonType(_ subtitleType: SubtitleCellValue , contact: EPContact) {
         
         switch subtitleType {
             
-        case SubtitleCellValue.PhoneNumber:
+        case SubtitleCellValue.phoneNumber:
             let phoneNumberCount = contact.phoneNumbers.count
             
             if phoneNumberCount == 1  {
@@ -71,7 +71,7 @@ class EPContactCell: UITableViewCell {
             else {
                 self.contactDetailTextLabel.text = EPGlobalConstants.Strings.phoneNumberNotAvaialable
             }
-        case SubtitleCellValue.Email:
+        case SubtitleCellValue.email:
             let emailCount = contact.emails.count
         
             if emailCount == 1  {
@@ -83,9 +83,9 @@ class EPContactCell: UITableViewCell {
             else {
                 self.contactDetailTextLabel.text = EPGlobalConstants.Strings.emailNotAvaialable
             }
-        case SubtitleCellValue.Birthday:
+        case SubtitleCellValue.birthday:
             self.contactDetailTextLabel.text = contact.birthdayString
-        case SubtitleCellValue.Organization:
+        case SubtitleCellValue.organization:
             self.contactDetailTextLabel.text = contact.company! as String
         }
     }
