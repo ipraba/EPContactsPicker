@@ -13,18 +13,18 @@ extension String {
     subscript(r: Range<Int>) -> String? {
         get {
             let stringCount = self.characters.count as Int
-            if (stringCount < r.endIndex) || (stringCount < r.startIndex) {
+            if (stringCount < r.upperBound) || (stringCount < r.lowerBound) {
                 return nil
             }
-            let startIndex = self.startIndex.advancedBy(r.startIndex)
-            let endIndex = self.startIndex.advancedBy(r.endIndex - r.startIndex)
+            let startIndex = self.characters.index(self.startIndex, offsetBy: r.lowerBound)
+            let endIndex = self.characters.index(self.startIndex, offsetBy: r.upperBound - r.lowerBound)
             return self[(startIndex ..< endIndex)]
         }
     }
     
     func containsAlphabets() -> Bool {
         //Checks if all the characters inside the string are alphabets
-        let set = NSCharacterSet.letterCharacterSet()
-        return self.utf16.contains( { return set.characterIsMember($0)  } )
+        let set = CharacterSet.letters
+        return self.utf16.contains( where: { return set.contains(UnicodeScalar($0)!)  } )
     }
 }
