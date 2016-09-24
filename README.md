@@ -23,8 +23,7 @@ Preview
 ## CocoaPods ##
 EPContactsPicker is available on CocoaPods. Just add the following to your project Podfile:
 
-* Swift 3 `pod 'EPContactsPicker', '~> 2.0' :git => 'https://github.com/Sorix/EPContactsPicker'`
-* Swift 2.3 `pod 'EPContactsPicker', '~> 1.0' :git => 'https://github.com/Sorix/EPContactsPicker'`
+`pod 'EPContactsPicker'`
 
 ## Manual Installation ##
 
@@ -33,7 +32,7 @@ Just drag and drop the `EPContactsPicker` folder into your project
 # Requirements #
 
 * iOS9+
-* Swift 2.0+
+* Swift 3.0
 * ARC
 
 For manual installation you might have to add these frameworks in your Build Phases
