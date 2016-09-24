@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "EPContactsPicker"
-  s.version          = "2.0"
+  s.version          = "2.0.0"
   s.summary          = "A contacts picker component for iOS written in swift using new contacts framwork"
   s.description      = <<-DESC
 Features
