@@ -48,6 +48,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
+    var filterOnlyWithPhones: Bool = false
     
     // MARK: - Lifecycle Methods
     
@@ -139,6 +140,15 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         subtitleCellValue = subtitleCellType
     }
     
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, contactsTitle: String, subtitleCellType: SubtitleCellValue, filterOnlyWithPhones: Bool) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        contactDelegate = delegate
+        self.title = contactsTitle
+        subtitleCellValue = subtitleCellType
+        self.filterOnlyWithPhones = filterOnlyWithPhones
+    }
+    
     
     // MARK: - Contact Operations
   
@@ -196,21 +206,22 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 
                 do {
                     try contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
-                        //Ordering contacts based on alphabets in firstname
-                        contactsArray.append(contact)
-                        var key: String = "#"
-                        //If ordering has to be happening via family name change it here.
-                        if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
-                            key = firstLetter.uppercased()
+                        if self.filterOnlyWithPhones == false || contact.phoneNumbers.count > 0 {
+                            //Ordering contacts based on alphabets in firstname
+                            contactsArray.append(contact)
+                            var key: String = "#"
+                            //If ordering has to be happening via family name change it here.
+                            if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
+                                key = firstLetter.uppercased()
+                            }
+                            var contacts = [CNContact]()
+                            
+                            if let segregatedContact = self.orderedContacts[key] {
+                                contacts = segregatedContact
+                            }
+                            contacts.append(contact)
+                            self.orderedContacts[key] = contacts
                         }
-                        var contacts = [CNContact]()
-                        
-                        if let segregatedContact = self.orderedContacts[key] {
-                            contacts = segregatedContact
-                        }
-                        contacts.append(contact)
-                        self.orderedContacts[key] = contacts
-
                     })
                     self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
                     if self.sortedContactKeys.first == "#" {
