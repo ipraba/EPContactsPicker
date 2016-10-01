@@ -26,7 +26,7 @@ import Contacts
 
 typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
 
-public enum SubtitleCellValue{
+@objc public enum SubtitleCellValue: Int {
     case phoneNumber
     case email
     case birthday
@@ -53,7 +53,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        self.title = EPGlobalConstants.Strings.contactsTitle
+        if (self.title == nil) {
+            self.title = EPGlobalConstants.Strings.contactsTitle
+        }
 
         registerContactCell()
         inititlizeBarButtons()
@@ -121,11 +123,19 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         self.multiSelectEnabled = multiSelection
         contactDelegate = delegate
     }
-
-    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, subtitleCellType: SubtitleCellValue) {
+    
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, contactsTitle: String) {
         self.init(style: .plain)
         self.multiSelectEnabled = multiSelection
         contactDelegate = delegate
+        self.title = contactsTitle
+    }
+    
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, contactsTitle: String, subtitleCellType: SubtitleCellValue) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        contactDelegate = delegate
+        self.title = contactsTitle
         subtitleCellValue = subtitleCellType
     }
     
