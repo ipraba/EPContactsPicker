@@ -23,5 +23,8 @@ DESC
   s.resource_bundles = {
     'EPContactsPicker' => ['Pods/**/*.xib']
     }
+  s.pod_target_xcconfig = {
+                 'SWIFT_VERSION' => '3.0'
+               }
 
 end
