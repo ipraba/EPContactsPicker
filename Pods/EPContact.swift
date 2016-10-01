@@ -61,7 +61,7 @@ open class EPContact {
     }
 	
     open func displayName() -> String {
-        return "\(firstName) \(lastName)"
+        return firstName + " " + lastName
     }
     
     open func contactInitials() -> String {
