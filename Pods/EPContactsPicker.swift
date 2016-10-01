@@ -200,42 +200,55 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             
             case  CNAuthorizationStatus.authorized:
                 //Authorization granted by user for this app.
-                var contactsArray = [CNContact]()
                 
-                let contactFetchRequest = CNContactFetchRequest(keysToFetch: allowedContactKeys())
-                
-                do {
-                    try contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
-                        if self.filterOnlyWithPhones == false || contact.phoneNumbers.count > 0 {
-                            //Ordering contacts based on alphabets in firstname
-                            contactsArray.append(contact)
-                            var key: String = "#"
-                            //If ordering has to be happening via family name change it here.
-                            if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
-                                key = firstLetter.uppercased()
-                            }
-                            var contacts = [CNContact]()
-                            
-                            if let segregatedContact = self.orderedContacts[key] {
-                                contacts = segregatedContact
-                            }
-                            contacts.append(contact)
-                            self.orderedContacts[key] = contacts
-                        }
-                    })
-                    self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
-                    if self.sortedContactKeys.first == "#" {
-                        self.sortedContactKeys.removeFirst()
-                        self.sortedContactKeys.append("#")
-                    }
+                getContactsOnBackgroundThread { (contactsArray) in
                     completion(contactsArray, nil)
-                }
-                //Catching exception as enumerateContactsWithFetchRequest can throw errors
-                catch let error as NSError {
-                    print(error.localizedDescription)
                 }
             
         }
+    }
+    
+    func getContactsOnBackgroundThread ( completion:@escaping (_ contacts:[CNContact])->()) {
+        
+        DispatchQueue.global(qos: .userInitiated).async(execute: { () -> Void in
+            
+            var contactsArray = [CNContact]()
+            let contactFetchRequest = CNContactFetchRequest(keysToFetch: self.allowedContactKeys())
+            
+            do {
+                try self.contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
+                    if self.filterOnlyWithPhones == false || contact.phoneNumbers.count > 0 {
+                        //Ordering contacts based on alphabets in firstname
+                        contactsArray.append(contact)
+                        var key: String = "#"
+                        //If ordering has to be happening via family name change it here.
+                        if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
+                            key = firstLetter.uppercased()
+                        }
+                        var contacts = [CNContact]()
+                        
+                        if let segregatedContact = self.orderedContacts[key] {
+                            contacts = segregatedContact
+                        }
+                        contacts.append(contact)
+                        self.orderedContacts[key] = contacts
+                    }
+                })
+                self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
+                if self.sortedContactKeys.first == "#" {
+                    self.sortedContactKeys.removeFirst()
+                    self.sortedContactKeys.append("#")
+                }
+            }
+            //Catching exception as enumerateContactsWithFetchRequest can throw errors
+            catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            
+            DispatchQueue.main.async(execute: { () -> Void in
+                completion(contactsArray)
+            })
+        })
     }
     
     func allowedContactKeys() -> [CNKeyDescriptor]{
