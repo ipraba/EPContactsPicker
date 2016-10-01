@@ -10,11 +10,11 @@ import UIKit
 import Contacts
 
 
-public protocol EPPickerDelegate {
-	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
-    func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
-    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
-	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+@objc public protocol EPPickerDelegate {
+    @objc optional func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
+    @objc optional func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
+    @objc optional func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
+    @objc optional func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
 }
 
 public extension EPPickerDelegate {

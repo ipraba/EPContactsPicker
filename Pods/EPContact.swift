@@ -9,7 +9,7 @@
 import UIKit
 import Contacts
 
-open class EPContact {
+@objc open class EPContact: NSObject {
     
     open var firstName: String
     open var lastName: String
