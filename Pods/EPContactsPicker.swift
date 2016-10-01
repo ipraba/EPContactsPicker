@@ -132,6 +132,13 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         self.title = contactsTitle
     }
     
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, subtitleCellType: SubtitleCellValue) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        contactDelegate = delegate
+        subtitleCellValue = subtitleCellType
+    }
+    
     convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, contactsTitle: String, subtitleCellType: SubtitleCellValue) {
         self.init(style: .plain)
         self.multiSelectEnabled = multiSelection
@@ -247,6 +254,42 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             
             DispatchQueue.main.async(execute: { () -> Void in
                 completion(contactsArray)
+            })
+        })
+    }
+    
+    open func updateSearchResults(for searchController: UISearchController) {
+        if resultSearchController.searchBar.text != nil, searchController.isActive {
+            updateSearchResultsOnBackgroundThread { (filteredContacts) in
+                self.filteredContacts = filteredContacts
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func updateSearchResultsOnBackgroundThread ( completion:@escaping (_ contacts:[CNContact])->()) {
+        
+        DispatchQueue.global(qos: .userInitiated).async(execute: { () -> Void in
+            
+            let searchText = self.resultSearchController.searchBar.text!
+            let predicate: NSPredicate
+            if searchText.characters.count > 0 {
+                predicate = CNContact.predicateForContacts(matchingName: (searchText))
+            } else {
+                predicate = CNContact.predicateForContactsInContainer(withIdentifier: self.contactsStore!.defaultContainerIdentifier())
+            }
+            
+            let store = CNContactStore()
+            var filteredContacts = [CNContact]()
+            do {
+                filteredContacts = try store.unifiedContacts(matching: predicate, keysToFetch: self.allowedContactKeys())
+            }
+            catch {
+                print("Error!")
+            }
+            
+            DispatchQueue.main.async(execute: { () -> Void in
+                completion(filteredContacts)
             })
         })
     }
@@ -369,32 +412,6 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     }
     
     // MARK: - Search Actions
-    
-    open func updateSearchResults(for searchController: UISearchController)
-    {
-        if let searchText = resultSearchController.searchBar.text , searchController.isActive {
-            
-            let predicate: NSPredicate
-            if searchText.characters.count > 0 {
-                predicate = CNContact.predicateForContacts(matchingName: searchText)
-            } else {
-                predicate = CNContact.predicateForContactsInContainer(withIdentifier: contactsStore!.defaultContainerIdentifier())
-            }
-            
-            let store = CNContactStore()
-            do {
-                filteredContacts = try store.unifiedContacts(matching: predicate,
-                    keysToFetch: allowedContactKeys())
-                //print("\(filteredContacts.count) count")
-                
-                self.tableView.reloadData()
-                
-            }
-            catch {
-                print("Error!")
-            }
-        }
-    }
     
     open func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
