@@ -1,0 +1,29 @@
+PODS:
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.8.4)
+  - TesseractOCRiOS (4.0.0)
+
+DEPENDENCIES:
+  - Bolts
+  - TesseractOCRiOS (from `https://github.com/gali8/Tesseract-OCR-iOS.git`)
+
+EXTERNAL SOURCES:
+  TesseractOCRiOS:
+    :git: https://github.com/gali8/Tesseract-OCR-iOS.git
+
+CHECKOUT OPTIONS:
+  TesseractOCRiOS:
+    :commit: b4edaf737b9495b6d609375c1ff2875be9acdb47
+    :git: https://github.com/gali8/Tesseract-OCR-iOS.git
+
+SPEC CHECKSUMS:
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  TesseractOCRiOS: 729989db3984bb60ba3addb053569b172d48c409
+
+PODFILE CHECKSUM: a140e259d1de0ca046061d447cc9a87dd9b6076b
+
+COCOAPODS: 1.1.0.rc.2
