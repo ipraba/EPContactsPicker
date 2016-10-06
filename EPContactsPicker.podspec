@@ -18,7 +18,7 @@ DESC
   s.platform     = :ios, '9.0'
   s.requires_arc = true
   s.source_files = 'Pods'
-  s.frameworks = 'Contacts', 'ContactsUI', 'Bolts', 'TesseractOCR', 'TesseractOCRiOS'
+  s.frameworks = 'Contacts', 'ContactsUI'
   s.resources        = ["Pods/EPContactCell.xib"]
   s.resource_bundles = {
     'EPContactsPicker' => ['Pods/**/*.xib']
