@@ -33,7 +33,7 @@ typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> V
     case organization
 }
 
-open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
+@objc open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
     // MARK: - Properties
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EPContactCell: UITableViewCell {
+@objc open class EPContactCell: UITableViewCell {
 
     @IBOutlet weak var contactTextLabel: UILabel!
     @IBOutlet weak var contactDetailTextLabel: UILabel!
@@ -18,7 +18,7 @@ class EPContactCell: UITableViewCell {
     
     var contact: EPContact?
     
-    override func awakeFromNib() {
+    override open func awakeFromNib() {
         
         super.awakeFromNib()
         // Initialization code
@@ -27,7 +27,7 @@ class EPContactCell: UITableViewCell {
         contactContainerView.layer.cornerRadius = contactContainerView.frame.size.width/2
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
+    override open func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
