@@ -333,14 +333,14 @@ typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> V
 		let contact: EPContact
         
         if resultSearchController.isActive {
-            contact = EPContact(contact: filteredContacts[(indexPath as NSIndexPath).row])
+            contact = EPContact.init(contact: filteredContacts[(indexPath as NSIndexPath).row])
         } else {
 			guard let contactsForSection = orderedContacts[sortedContactKeys[(indexPath as NSIndexPath).section]] else {
 				assertionFailure()
 				return UITableViewCell()
 			}
 
-			contact = EPContact(contact: contactsForSection[(indexPath as NSIndexPath).row])
+			contact = EPContact.init(contact: contactsForSection[(indexPath as NSIndexPath).row])
         }
 		
         if multiSelectEnabled  && selectedContacts.contains(where: { $0.contactId == contact.contactId }) {
