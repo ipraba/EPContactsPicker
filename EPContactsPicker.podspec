@@ -26,7 +26,5 @@ DESC
   s.pod_target_xcconfig = {
                  'SWIFT_VERSION' => '3.0'
                }
-  s.dependency       = 'Bolts'
-  s.dependency       = 'TesseractOCRiOS', :git => 'https://github.com/gali8/Tesseract-OCR-iOS.git'
 
 end
