@@ -10,6 +10,7 @@ import UIKit
 import Contacts
 
 
+
 @objc public protocol EPPickerDelegate {
     @objc optional func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
     @objc optional func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
@@ -24,7 +25,7 @@ import Contacts
 //	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
 //}
 
-typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
+public typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
 
 @objc public enum SubtitleCellValue: Int {
     case phoneNumber
@@ -156,10 +157,9 @@ typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> V
         self.filterOnlyWithPhones = filterOnlyWithPhones
     }
     
-    
     // MARK: - Contact Operations
   
-      open func reloadContacts() {
+    open func reloadContacts() {
         getContacts( {(contacts, error) in
             if (error == nil) {
                 DispatchQueue.main.async(execute: {
@@ -167,9 +167,9 @@ typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> V
                 })
             }
         })
-      }
+    }
   
-    func getContacts(_ completion:  @escaping ContactsHandler) {
+    open func getContacts(_ completion:  @escaping ContactsHandler) {
         if contactsStore == nil {
             //ContactStore is control for accessing the Contacts
             contactsStore = CNContactStore()
@@ -215,7 +215,7 @@ typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> V
         }
     }
     
-    func getContactsOnBackgroundThread ( completion:@escaping (_ contacts:[CNContact])->()) {
+    open func getContactsOnBackgroundThread ( completion:@escaping (_ contacts:[CNContact])->()) {
         
         DispatchQueue.global(qos: .userInitiated).async(execute: { () -> Void in
             
@@ -333,14 +333,14 @@ typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> V
 		let contact: EPContact
         
         if resultSearchController.isActive {
-            contact = EPContact.init(contact: filteredContacts[(indexPath as NSIndexPath).row])
+            contact = EPContact(contact: filteredContacts[(indexPath as NSIndexPath).row])
         } else {
 			guard let contactsForSection = orderedContacts[sortedContactKeys[(indexPath as NSIndexPath).section]] else {
 				assertionFailure()
 				return UITableViewCell()
 			}
 
-			contact = EPContact.init(contact: contactsForSection[(indexPath as NSIndexPath).row])
+			contact = EPContact(contact: contactsForSection[(indexPath as NSIndexPath).row])
         }
 		
         if multiSelectEnabled  && selectedContacts.contains(where: { $0.contactId == contact.contactId }) {
