@@ -50,7 +50,11 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
     //Enables custom filtering of contacts.
-    public var shouldAddContact: ((CNContact) -> Bool)?
+    public var shouldAddContact: ((CNContact) -> Bool)? {
+        didSet {
+            self.reloadContacts()
+        }
+    }
     
     // MARK: - Lifecycle Methods
     
