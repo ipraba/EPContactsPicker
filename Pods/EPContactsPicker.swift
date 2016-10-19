@@ -49,6 +49,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
+    //Enables custom filtering of contacts.
+    public var shouldAddContact: ((CNContact) -> Bool)?
+    
     // MARK: - Lifecycle Methods
     
     override open func viewDidLoad() {
@@ -186,8 +189,19 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 
                 do {
                     try contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
+                        
+                        //Adds the `contact` to the `contactsArray` if the closure returns true. 
+                        //If the closure doesn't exist, then the contact is added.
+                        if let shouldAddContactClosure = self.shouldAddContact {
+                            if shouldAddContactClosure(contact) {
+                                contactsArray.append(contact)
+                            }
+                            
+                        } else {
+                            contactsArray.append(contact)
+                        }
+                        
                         //Ordering contacts based on alphabets in firstname
-                        contactsArray.append(contact)
                         var key: String = "#"
                         //If ordering has to be happening via family name change it here.
                         if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
