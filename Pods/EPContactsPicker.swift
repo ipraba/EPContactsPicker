@@ -10,7 +10,7 @@ import UIKit
 import Contacts
 
 
-public protocol EPPickerDelegate {
+public protocol EPPickerDelegate: class {
 	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
     func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
@@ -37,7 +37,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     // MARK: - Properties
     
-    open var contactDelegate: EPPickerDelegate?
+    open weak var contactDelegate: EPPickerDelegate?
     var contactsStore: CNContactStore?
     var resultSearchController = UISearchController()
     var orderedContacts = [String: [CNContact]]() //Contacts ordered in dicitonary alphabetically
