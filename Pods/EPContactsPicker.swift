@@ -11,17 +11,17 @@ import Contacts
 
 
 public protocol EPPickerDelegate {
-	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
-    func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
-    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
-	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+	func epContactPicker(_ controller: EPContactsPicker, didContactFetchFailed error: NSError)
+    func epContactPicker(_ controller: EPContactsPicker, didCancel error: NSError)
+    func epContactPicker(_ controller: EPContactsPicker, didSelectContact contact: EPContact)
+	func epContactPicker(_ controller: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
 }
 
 public extension EPPickerDelegate {
-	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError) { }
-	func epContactPicker(_: EPContactsPicker, didCancel error: NSError) { }
-	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
-	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
+	func epContactPicker(_ controller: EPContactsPicker, didContactFetchFailed error: NSError) { }
+	func epContactPicker(_ controller: EPContactsPicker, didCancel error: NSError) { }
+	func epContactPicker(_ controller: EPContactsPicker, didSelectContact contact: EPContact) { }
+	func epContactPicker(_ controller: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
 }
 
 typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
