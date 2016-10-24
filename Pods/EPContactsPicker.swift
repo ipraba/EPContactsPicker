@@ -50,7 +50,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
     //Enables custom filtering of contacts.
-    public var shouldAddContact: ((CNContact) -> Bool)? {
+    public var shouldIncludeContact: ((CNContact) -> Bool)? {
         didSet {
             self.reloadContacts()
         }
@@ -198,7 +198,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                     
                     //Adds the `contact` to the `contactsArray` if the closure returns true.
                     //If the closure doesn't exist, then the contact is added.
-                    if let shouldAddContactClosure = self.shouldAddContact, !shouldAddContactClosure(contact) {
+                    if let shouldIncludeContactClosure = self.shouldIncludeContact, !shouldIncludeContactClosure(contact) {
                         return
                     }
                     
