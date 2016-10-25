@@ -370,6 +370,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             do {
                 filteredContacts = try store.unifiedContacts(matching: predicate,
                                                              keysToFetch: allowedContactKeys())
+                if let shouldIncludeContact = shouldIncludeContact {
+                    filteredContacts = filteredContacts.filter(shouldIncludeContact)
+                }
+                
                 //print("\(filteredContacts.count) count")
                 
                 self.tableView.reloadData()
