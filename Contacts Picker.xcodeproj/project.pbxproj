@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7BE1F2341EC83BB700E672A4 /* EPContactsPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BE1F2321EC83BB700E672A4 /* EPContactsPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7BE1F2381EC83BBE00E672A4 /* EPConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9761BDF9227001AA643 /* EPConstants.swift */; };
+		7BE1F2391EC83BBE00E672A4 /* EPContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9771BDF9227001AA643 /* EPContact.swift */; };
+		7BE1F23A1EC83BBE00E672A4 /* EPContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9781BDF9227001AA643 /* EPContactCell.swift */; };
+		7BE1F23B1EC83BBE00E672A4 /* EPContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9791BDF9227001AA643 /* EPContactCell.xib */; };
+		7BE1F23C1EC83BBE00E672A4 /* EPContactsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C97A1BDF9227001AA643 /* EPContactsPicker.swift */; };
+		7BE1F23D1EC83BBE00E672A4 /* EPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C97B1BDF9227001AA643 /* EPExtensions.swift */; };
 		E210822E1D916C6F002CCAD5 /* EPContactsPicker.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */; };
 		F4C1C9421BDF8AB7001AA643 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9411BDF8AB7001AA643 /* AppDelegate.swift */; };
 		F4C1C9491BDF8AB7001AA643 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9481BDF8AB7001AA643 /* Assets.xcassets */; };
@@ -23,6 +30,9 @@
 
 /* Begin PBXFileReference section */
 		4B7552C01CD28ADA00C638F1 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		7BE1F2301EC83BB700E672A4 /* EPContactsPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EPContactsPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7BE1F2321EC83BB700E672A4 /* EPContactsPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EPContactsPicker.h; sourceTree = "<group>"; };
+		7BE1F2331EC83BB700E672A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EPContactsPicker.podspec; sourceTree = "<group>"; };
 		F4C1C93E1BDF8AB7001AA643 /* Contacts Picker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Contacts Picker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C1C9411BDF8AB7001AA643 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -40,6 +50,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7BE1F22C1EC83BB700E672A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4C1C93B1BDF8AB7001AA643 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -50,12 +67,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7BE1F2311EC83BB700E672A4 /* EPContactsPicker */ = {
+			isa = PBXGroup;
+			children = (
+				7BE1F2321EC83BB700E672A4 /* EPContactsPicker.h */,
+				7BE1F2331EC83BB700E672A4 /* Info.plist */,
+			);
+			path = EPContactsPicker;
+			sourceTree = "<group>";
+		};
 		F4C1C9351BDF8AB7001AA643 = {
 			isa = PBXGroup;
 			children = (
 				4B7552C01CD28ADA00C638F1 /* .travis.yml */,
 				E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */,
 				F4C1C9401BDF8AB7001AA643 /* Contacts Picker */,
+				7BE1F2311EC83BB700E672A4 /* EPContactsPicker */,
 				F4C1C93F1BDF8AB7001AA643 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				F4C1C93E1BDF8AB7001AA643 /* Contacts Picker.app */,
+				7BE1F2301EC83BB700E672A4 /* EPContactsPicker.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -98,7 +126,36 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		7BE1F22D1EC83BB700E672A4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BE1F2341EC83BB700E672A4 /* EPContactsPicker.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		7BE1F22F1EC83BB700E672A4 /* EPContactsPicker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7BE1F2371EC83BB700E672A4 /* Build configuration list for PBXNativeTarget "EPContactsPicker" */;
+			buildPhases = (
+				7BE1F22B1EC83BB700E672A4 /* Sources */,
+				7BE1F22C1EC83BB700E672A4 /* Frameworks */,
+				7BE1F22D1EC83BB700E672A4 /* Headers */,
+				7BE1F22E1EC83BB700E672A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EPContactsPicker;
+			productName = EPContactsPicker;
+			productReference = 7BE1F2301EC83BB700E672A4 /* EPContactsPicker.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		F4C1C93D1BDF8AB7001AA643 /* Contacts Picker */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4C1C95B1BDF8AB7001AA643 /* Build configuration list for PBXNativeTarget "Contacts Picker" */;
@@ -125,6 +182,10 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Prabaharan Elangovan";
 				TargetAttributes = {
+					7BE1F22F1EC83BB700E672A4 = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+					};
 					F4C1C93D1BDF8AB7001AA643 = {
 						CreatedOnToolsVersion = 7.0;
 						LastSwiftMigration = 1010;
@@ -146,11 +207,20 @@
 			projectRoot = "";
 			targets = (
 				F4C1C93D1BDF8AB7001AA643 /* Contacts Picker */,
+				7BE1F22F1EC83BB700E672A4 /* EPContactsPicker */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7BE1F22E1EC83BB700E672A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BE1F23B1EC83BBE00E672A4 /* EPContactCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4C1C93C1BDF8AB7001AA643 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -166,6 +236,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7BE1F22B1EC83BB700E672A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BE1F23D1EC83BBE00E672A4 /* EPExtensions.swift in Sources */,
+				7BE1F2381EC83BBE00E672A4 /* EPConstants.swift in Sources */,
+				7BE1F23A1EC83BBE00E672A4 /* EPContactCell.swift in Sources */,
+				7BE1F2391EC83BBE00E672A4 /* EPContact.swift in Sources */,
+				7BE1F23C1EC83BBE00E672A4 /* EPContactsPicker.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4C1C93A1BDF8AB7001AA643 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -202,6 +284,56 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7BE1F2351EC83BB700E672A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = EPContactsPicker/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = life.1se.EPContactsPicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		7BE1F2361EC83BB700E672A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = EPContactsPicker/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = life.1se.EPContactsPicker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		F4C1C9591BDF8AB7001AA643 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -335,6 +467,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7BE1F2371EC83BB700E672A4 /* Build configuration list for PBXNativeTarget "EPContactsPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BE1F2351EC83BB700E672A4 /* Debug */,
+				7BE1F2361EC83BB700E672A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		F4C1C9391BDF8AB7001AA643 /* Build configuration list for PBXProject "Contacts Picker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
