@@ -14,6 +14,8 @@
 		7BE1F23B1EC83BBE00E672A4 /* EPContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9791BDF9227001AA643 /* EPContactCell.xib */; };
 		7BE1F23C1EC83BBE00E672A4 /* EPContactsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C97A1BDF9227001AA643 /* EPContactsPicker.swift */; };
 		7BE1F23D1EC83BBE00E672A4 /* EPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C97B1BDF9227001AA643 /* EPExtensions.swift */; };
+		7BE1F24E1EC83DD000E672A4 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BE1F24C1EC83DD000E672A4 /* Contacts.framework */; };
+		7BE1F24F1EC83DD000E672A4 /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BE1F24D1EC83DD000E672A4 /* ContactsUI.framework */; };
 		E210822E1D916C6F002CCAD5 /* EPContactsPicker.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */; };
 		F4C1C9421BDF8AB7001AA643 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1C9411BDF8AB7001AA643 /* AppDelegate.swift */; };
 		F4C1C9491BDF8AB7001AA643 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C1C9481BDF8AB7001AA643 /* Assets.xcassets */; };
@@ -33,6 +35,8 @@
 		7BE1F2301EC83BB700E672A4 /* EPContactsPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EPContactsPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BE1F2321EC83BB700E672A4 /* EPContactsPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EPContactsPicker.h; sourceTree = "<group>"; };
 		7BE1F2331EC83BB700E672A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7BE1F24C1EC83DD000E672A4 /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
+		7BE1F24D1EC83DD000E672A4 /* ContactsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ContactsUI.framework; path = System/Library/Frameworks/ContactsUI.framework; sourceTree = SDKROOT; };
 		E210822D1D916C6F002CCAD5 /* EPContactsPicker.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EPContactsPicker.podspec; sourceTree = "<group>"; };
 		F4C1C93E1BDF8AB7001AA643 /* Contacts Picker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Contacts Picker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C1C9411BDF8AB7001AA643 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BE1F24E1EC83DD000E672A4 /* Contacts.framework in Frameworks */,
+				7BE1F24F1EC83DD000E672A4 /* ContactsUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +82,15 @@
 			path = EPContactsPicker;
 			sourceTree = "<group>";
 		};
+		7BE1F24B1EC83DD000E672A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7BE1F24C1EC83DD000E672A4 /* Contacts.framework */,
+				7BE1F24D1EC83DD000E672A4 /* ContactsUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F4C1C9351BDF8AB7001AA643 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +99,7 @@
 				F4C1C9401BDF8AB7001AA643 /* Contacts Picker */,
 				7BE1F2311EC83BB700E672A4 /* EPContactsPicker */,
 				F4C1C93F1BDF8AB7001AA643 /* Products */,
+				7BE1F24B1EC83DD000E672A4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -458,6 +474,7 @@
 				7BE1F2361EC83BB700E672A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F4C1C9391BDF8AB7001AA643 /* Build configuration list for PBXProject "Contacts Picker" */ = {
 			isa = XCConfigurationList;
