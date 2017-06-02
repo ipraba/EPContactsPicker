@@ -10,30 +10,31 @@ import UIKit
 import Contacts
 
 
-public protocol EPPickerDelegate {
-	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
-    func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
-    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
-	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+
+@objc public protocol EPPickerDelegate {
+    @objc optional func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
+    @objc optional func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
+    @objc optional func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
+    @objc optional func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
 }
 
-public extension EPPickerDelegate {
-	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError) { }
-	func epContactPicker(_: EPContactsPicker, didCancel error: NSError) { }
-	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
-	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
-}
+//public extension EPPickerDelegate {
+//	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError) { }
+//	func epContactPicker(_: EPContactsPicker, didCancel error: NSError) { }
+//	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
+//	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
+//}
 
-typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
+public typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
 
-public enum SubtitleCellValue{
+@objc public enum SubtitleCellValue: Int {
     case phoneNumber
     case email
     case birthday
     case organization
 }
 
-open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
+@objc open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
     // MARK: - Properties
     
@@ -48,12 +49,15 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
+    var filterOnlyWithPhones: Bool = false
     
     // MARK: - Lifecycle Methods
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        self.title = EPGlobalConstants.Strings.contactsTitle
+        if (self.title == nil) {
+            self.title = EPGlobalConstants.Strings.contactsTitle
+        }
 
         registerContactCell()
         inititlizeBarButtons()
@@ -121,7 +125,14 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         self.multiSelectEnabled = multiSelection
         contactDelegate = delegate
     }
-
+    
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, contactsTitle: String) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        contactDelegate = delegate
+        self.title = contactsTitle
+    }
+    
     convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, subtitleCellType: SubtitleCellValue) {
         self.init(style: .plain)
         self.multiSelectEnabled = multiSelection
@@ -129,10 +140,26 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         subtitleCellValue = subtitleCellType
     }
     
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, contactsTitle: String, subtitleCellType: SubtitleCellValue) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        contactDelegate = delegate
+        self.title = contactsTitle
+        subtitleCellValue = subtitleCellType
+    }
+    
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, contactsTitle: String, subtitleCellType: SubtitleCellValue, filterOnlyWithPhones: Bool) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        contactDelegate = delegate
+        self.title = contactsTitle
+        subtitleCellValue = subtitleCellType
+        self.filterOnlyWithPhones = filterOnlyWithPhones
+    }
     
     // MARK: - Contact Operations
   
-      open func reloadContacts() {
+    open func reloadContacts() {
         getContacts( {(contacts, error) in
             if (error == nil) {
                 DispatchQueue.main.async(execute: {
@@ -140,9 +167,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 })
             }
         })
-      }
+    }
   
-    func getContacts(_ completion:  @escaping ContactsHandler) {
+    open func getContacts(_ completion:  @escaping ContactsHandler) {
         if contactsStore == nil {
             //ContactStore is control for accessing the Contacts
             contactsStore = CNContactStore()
@@ -157,7 +184,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 
                 let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {  action in
-                    self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
+                    self.contactDelegate?.epContactPicker!(self, didContactFetchFailed: error)
                     completion([], error)
                     self.dismiss(animated: true, completion: nil)
                 })
@@ -180,12 +207,24 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             
             case  CNAuthorizationStatus.authorized:
                 //Authorization granted by user for this app.
-                var contactsArray = [CNContact]()
                 
-                let contactFetchRequest = CNContactFetchRequest(keysToFetch: allowedContactKeys())
-                
-                do {
-                    try contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
+                getContactsOnBackgroundThread { (contactsArray) in
+                    completion(contactsArray, nil)
+                }
+            
+        }
+    }
+    
+    open func getContactsOnBackgroundThread ( completion:@escaping (_ contacts:[CNContact])->()) {
+        
+        DispatchQueue.global(qos: .userInitiated).async(execute: { () -> Void in
+            
+            var contactsArray = [CNContact]()
+            let contactFetchRequest = CNContactFetchRequest(keysToFetch: self.allowedContactKeys())
+            
+            do {
+                try self.contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
+                    if self.filterOnlyWithPhones == false || contact.phoneNumbers.count > 0 {
                         //Ordering contacts based on alphabets in firstname
                         contactsArray.append(contact)
                         var key: String = "#"
@@ -200,23 +239,88 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                         }
                         contacts.append(contact)
                         self.orderedContacts[key] = contacts
-
-                    })
-                    self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
-                    if self.sortedContactKeys.first == "#" {
-                        self.sortedContactKeys.removeFirst()
-                        self.sortedContactKeys.append("#")
                     }
-                    completion(contactsArray, nil)
+                })
+                self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
+                if self.sortedContactKeys.first == "#" {
+                    self.sortedContactKeys.removeFirst()
+                    self.sortedContactKeys.append("#")
                 }
-                //Catching exception as enumerateContactsWithFetchRequest can throw errors
-                catch let error as NSError {
-                    print(error.localizedDescription)
-                }
+            }
+            //Catching exception as enumerateContactsWithFetchRequest can throw errors
+            catch let error as NSError {
+                print(error.localizedDescription)
+            }
             
-        }
+            DispatchQueue.main.async(execute: { () -> Void in
+                completion(contactsArray)
+            })
+        })
     }
-    
+	
+	open func updateSearchResults(for searchController: UISearchController) {
+		if let searchText = resultSearchController.searchBar.text, searchController.isActive {
+			
+			if searchText.characters.count == 0 {
+				filteredContacts = []
+				self.tableView.reloadData()
+				return
+			}
+			
+			let predicate: NSPredicate
+			if searchText.characters.count > 0 {
+				predicate = CNContact.predicateForContacts(matchingName: searchText)
+			} else {
+				predicate = CNContact.predicateForContactsInContainer(withIdentifier: contactsStore!.defaultContainerIdentifier())
+			}
+			
+			let store = CNContactStore()
+			do {
+				filteredContacts = try store.unifiedContacts(matching: predicate, keysToFetch: allowedContactKeys())
+				self.tableView.reloadData()
+			}
+			catch {
+				print("Error!")
+			}
+		}
+	}
+	
+//    open func updateSearchResults(for searchController: UISearchController) {
+//        if resultSearchController.searchBar.text != nil, searchController.isActive {
+//            updateSearchResultsOnBackgroundThread { (filteredContacts) in
+//                self.filteredContacts = filteredContacts
+//                self.tableView.reloadData()
+//            }
+//        }
+//    }
+//    
+//    open func updateSearchResultsOnBackgroundThread ( completion:@escaping (_ contacts:[CNContact])->()) {
+//        
+//        DispatchQueue.global(qos: .userInitiated).async(execute: { () -> Void in
+//            
+//            let searchText = self.resultSearchController.searchBar.text!
+//            let predicate: NSPredicate
+//            if searchText.characters.count > 0 {
+//                predicate = CNContact.predicateForContacts(matchingName: (searchText))
+//            } else {
+//                predicate = CNContact.predicateForContactsInContainer(withIdentifier: self.contactsStore!.defaultContainerIdentifier())
+//            }
+//            
+//            let store = CNContactStore()
+//            var filteredContacts = [CNContact]()
+//            do {
+//                filteredContacts = try store.unifiedContacts(matching: predicate, keysToFetch: self.allowedContactKeys())
+//            }
+//            catch {
+//                print("Error!")
+//            }
+//            
+//            DispatchQueue.main.async(execute: { () -> Void in
+//                completion(filteredContacts)
+//            })
+//        })
+//    }
+	
     func allowedContactKeys() -> [CNKeyDescriptor]{
         //We have to provide only the keys which we have to access. We should avoid unnecessary keys when fetching the contact. Reducing the keys means faster the access.
         return [CNContactNamePrefixKey as CNKeyDescriptor,
@@ -296,7 +400,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
 			resultSearchController.isActive = false
 			self.dismiss(animated: true, completion: {
 				DispatchQueue.main.async {
-					self.contactDelegate?.epContactPicker(self, didSelectContact: selectedContact)
+					self.contactDelegate?.epContactPicker!(self, didSelectContact: selectedContact)
 				}
 			})
         }
@@ -325,42 +429,16 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     // MARK: - Button Actions
     
     func onTouchCancelButton() {
-        contactDelegate?.epContactPicker(self, didCancel: NSError(domain: "EPContactPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
+        contactDelegate?.epContactPicker!(self, didCancel: NSError(domain: "EPContactPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
         dismiss(animated: true, completion: nil)
     }
     
     func onTouchDoneButton() {
-        contactDelegate?.epContactPicker(self, didSelectMultipleContacts: selectedContacts)
+        contactDelegate?.epContactPicker!(self, didSelectMultipleContacts: selectedContacts)
         dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Search Actions
-    
-    open func updateSearchResults(for searchController: UISearchController)
-    {
-        if let searchText = resultSearchController.searchBar.text , searchController.isActive {
-            
-            let predicate: NSPredicate
-            if searchText.characters.count > 0 {
-                predicate = CNContact.predicateForContacts(matchingName: searchText)
-            } else {
-                predicate = CNContact.predicateForContactsInContainer(withIdentifier: contactsStore!.defaultContainerIdentifier())
-            }
-            
-            let store = CNContactStore()
-            do {
-                filteredContacts = try store.unifiedContacts(matching: predicate,
-                    keysToFetch: allowedContactKeys())
-                //print("\(filteredContacts.count) count")
-                
-                self.tableView.reloadData()
-                
-            }
-            catch {
-                print("Error!")
-            }
-        }
-    }
     
     open func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         

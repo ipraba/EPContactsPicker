@@ -9,8 +9,9 @@
 import UIKit
 import Contacts
 
-open class EPContact {
+@objc open class EPContact: NSObject {
     
+    open var originalCNContact: CNContact
     open var firstName: String
     open var lastName: String
     open var company: String
@@ -23,6 +24,7 @@ open class EPContact {
     open var emails = [(email: String, emailLabel: String )]()
 	
     public init (contact: CNContact) {
+        originalCNContact = contact
         firstName = contact.givenName
         lastName = contact.familyName
         company = contact.organizationName
