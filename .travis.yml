@@ -1,4 +1,4 @@
 language: objective-c
-osx_image: xcode8
+osx_image: xcode8.3.2
 before_install: gem install xcpretty
 script: xcodebuild -project Contacts\ Picker.xcodeproj -sdk iphonesimulator build | xcpretty -c
