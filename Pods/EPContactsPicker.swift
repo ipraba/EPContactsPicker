@@ -157,9 +157,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 
                 let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {  action in
-                    self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
                     completion([], error)
-                    self.dismiss(animated: true, completion: nil)
+                    self.dismiss(animated: true, completion: {
+                        self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
+                    })
                 })
                 alert.addAction(okAction)
                 self.present(alert, animated: true, completion: nil)
@@ -325,13 +326,15 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     // MARK: - Button Actions
     
     func onTouchCancelButton() {
-        contactDelegate?.epContactPicker(self, didCancel: NSError(domain: "EPContactPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: {
+            self.contactDelegate?.epContactPicker(self, didCancel: NSError(domain: "EPContactPickerErrorDomain", code: 2, userInfo: [ NSLocalizedDescriptionKey: "User Canceled Selection"]))
+        })
     }
     
     func onTouchDoneButton() {
-        contactDelegate?.epContactPicker(self, didSelectMultipleContacts: selectedContacts)
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: {
+            self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
+        })
     }
     
     // MARK: - Search Actions
