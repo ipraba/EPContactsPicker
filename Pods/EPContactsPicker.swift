@@ -66,6 +66,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
+            controller.hidesNavigationBarDuringPresentation = false
             controller.searchBar.sizeToFit()
             controller.searchBar.delegate = self
             self.tableView.tableHeaderView = controller.searchBar
