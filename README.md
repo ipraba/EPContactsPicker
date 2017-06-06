@@ -13,6 +13,7 @@ Contacts picker component using new contacts framework by apple
 [![CI Status](https://travis-ci.org/ipraba/EPContactsPicker.svg?branch=master)](https://travis-ci.org/ipraba/EPContactsPicker)
 [![License](https://img.shields.io/cocoapods/l/Ouroboros.svg?style=flat)](https://github.com/ipraba/EPContactsPicker/blob/master/LICENSE)
 [![Twitter: @HaveYouMetPrabu](https://img.shields.io/badge/contact-@HaveYouMetPrabu-blue.svg?style=flat)](https://twitter.com/HaveYouMetPrabu)
+[![codebeat badge](https://codebeat.co/badges/bbdd604a-0264-4c2f-8b8b-eb5d22ba4b60)](https://codebeat.co/projects/github-com-ipraba-epcontactspicker)
 
 Preview
 -------
