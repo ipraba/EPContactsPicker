@@ -49,6 +49,8 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
+    var isPresentingSearch: Bool = false
+    
     // MARK: - Lifecycle Methods
     
     override open func viewDidLoad() {
@@ -334,7 +336,11 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     func onTouchDoneButton() {
         dismiss(animated: true, completion: {
-            self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
+            if self.isPresentingSearch {
+                self.isPresentingSearch = false
+            } else {
+                self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
+            }
         })
     }
     
@@ -371,6 +377,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
         })
+    }
+    
+    open func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.isPresentingSearch = true
     }
     
 }
