@@ -38,4 +38,15 @@ struct EPGlobalConstants {
         static let alphabets = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","#"] //# indicates the names with numbers and blank spaces
     }
     
+//MARK: "Invite" button constants
+    struct SendInvitesButton {
+        static let height:CGFloat = 44
+        static let titleColor = UIColor.init(colorLiteralRed: 0, green: 122.0/255.0, blue:1.0, alpha:1.0)
+        static let titleFont = UIFont(name: "HelveticaNeue-Medium", size: 16.0)
+    }
+//MARK: "SelectContacts" button constants
+    struct SelectAllContactsButton {
+        static let selectAllContactString = "Select All"
+        static let deselectAllContactsString = "Deselect All"
+    }
 }

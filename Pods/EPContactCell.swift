@@ -15,8 +15,21 @@ class EPContactCell: UITableViewCell {
     @IBOutlet weak var contactImageView: UIImageView!
     @IBOutlet weak var contactInitialLabel: UILabel!
     @IBOutlet weak var contactContainerView: UIView!
+    @IBOutlet weak var checkMarkView: UIImageView!
+    
     
     var contact: EPContact?
+    var contactSelected: Bool = false{
+        didSet{
+            var image = UIImage()
+            if contactSelected {
+                image = UIImage(named: "CircularSelected_icon")!
+            }else{
+                image = UIImage(named: "CircularUnselected_icon")!
+            }
+            checkMarkView.image = image
+        }
+    }
     
     override func awakeFromNib() {
         
