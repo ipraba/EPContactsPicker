@@ -17,7 +17,7 @@ DESC
   s.source           = { :git => "https://github.com/ipraba/EPContactsPicker.git", :tag => s.version.to_s }
   s.platform     = :ios, '9.0'
   s.requires_arc = true
-  s.source_files = 'Pods'
+  s.source_files = 'Pods/EPContactsPicker/*'
   s.frameworks = 'Contacts', 'ContactsUI'
   s.resources        = ["Pods/EPContactCell.xib"]
   s.resource_bundles = {
