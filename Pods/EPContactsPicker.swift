@@ -347,7 +347,6 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
 				assertionFailure()
 				return UITableViewCell()
 			}
-
 			contact = EPContact(contact: contactsForSection[(indexPath as NSIndexPath).row])
         }
 		
