@@ -57,7 +57,7 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
-    var isPresentingSearch: Bool = false
+//    var isPresentingSearch: Bool = false
     
     var shouldSelectAllContactsOnLoad = false //If we need all contacts selected on controller load select true
     var tableView = UITableView()
@@ -347,7 +347,7 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
 				assertionFailure()
 				return UITableViewCell()
 			}
-			contact = EPContact(contact: contactsForSection[(indexPath as NSIndexPath).row])
+			contact = EPContact(contact: contactsForSection[(indexPath as NSIndexPath).row])  //
         }
 		
         if multiSelectEnabled  && selectedContacts.contains(where: { $0.contactId == contact.contactId }) {
@@ -416,11 +416,11 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     
     func onTouchSendInvitesButton() {
         dismiss(animated: true, completion: {
-            if self.isPresentingSearch {
+           /* if self.isPresentingSearch {
                 self.isPresentingSearch = false
-            } else {
+            } else { */
                 self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
-            }
+            //}
         })
     }
     
@@ -468,7 +468,7 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     }
     
     open func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        self.isPresentingSearch = true
+        //self.isPresentingSearch = true
     }
     
     //MARK: - Update Appearance Of Send Invites Button
