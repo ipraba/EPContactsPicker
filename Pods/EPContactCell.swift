@@ -17,10 +17,15 @@ class EPContactCell: UITableViewCell {
     @IBOutlet weak var contactContainerView: UIView!
     @IBOutlet weak var checkMarkView: UIImageView!
     
-    func getImage(named: String) -> UIImage {
+    func getCheckMarkImage(named: String) -> UIImage {
         let podBundle = Bundle(for: self.classForCoder)
-        let testImage = UIImage(named: named, in: podBundle, compatibleWith: nil)
-        return testImage!
+        var image = UIImage()
+        if let checkMarkImage = UIImage(named: named, in: podBundle, compatibleWith: nil){
+            image = checkMarkImage
+        }else{
+            assertionFailure("Could not load checkmark image")
+        }
+        return image
     }
     
     
@@ -29,9 +34,9 @@ class EPContactCell: UITableViewCell {
         didSet{
             var image = UIImage()
             if contactSelected {
-                image = getImage(named: "CircularSelected_icon")
+                image = getCheckMarkImage(named: "CircularSelected_icon")
             }else{
-                image = getImage(named: "CircularUnselected_icon")
+                image = getCheckMarkImage(named: "CircularUnselected_icon")
             }
             checkMarkView.image = image
         }
