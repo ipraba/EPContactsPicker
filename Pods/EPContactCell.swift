@@ -19,7 +19,7 @@ class EPContactCell: UITableViewCell {
     
     func getImage(named: String) -> UIImage {
         let podBundle = Bundle(for: self.classForCoder)
-        let testImage = UIImage(named: "CircularSelected_icon", in: podBundle, compatibleWith: nil)
+        let testImage = UIImage(named: named, in: podBundle, compatibleWith: nil)
         return testImage!
     }
     
