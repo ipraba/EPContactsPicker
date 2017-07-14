@@ -17,15 +17,21 @@ class EPContactCell: UITableViewCell {
     @IBOutlet weak var contactContainerView: UIView!
     @IBOutlet weak var checkMarkView: UIImageView!
     
+    func getImage(named: String) -> UIImage {
+        let podBundle = Bundle(for: self.classForCoder)
+        let testImage = UIImage(named: "CircularSelected_icon", in: podBundle, compatibleWith: nil)
+        return testImage!
+    }
+    
     
     var contact: EPContact?
     var contactSelected: Bool = false{
         didSet{
             var image = UIImage()
             if contactSelected {
-                image = UIImage(named: "Resources/CircularSelected_icon")!
+                image = getImage(named: "CircularSelected_icon")
             }else{
-                image = UIImage(named: "Resources/CircularUnselected_icon")!
+                image = getImage(named: "CircularUnselected_icon")
             }
             checkMarkView.image = image
         }
