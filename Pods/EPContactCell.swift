@@ -23,9 +23,9 @@ class EPContactCell: UITableViewCell {
         didSet{
             var image = UIImage()
             if contactSelected {
-                image = UIImage(named: "CircularSelected_icon")!
+                image = UIImage(named: "Resources/CircularSelected_icon")!
             }else{
-                image = UIImage(named: "CircularUnselected_icon")!
+                image = UIImage(named: "Resources/CircularUnselected_icon")!
             }
             checkMarkView.image = image
         }
