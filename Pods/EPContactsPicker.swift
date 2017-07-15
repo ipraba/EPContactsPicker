@@ -57,7 +57,12 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
-//    var isPresentingSearch: Bool = false
+//    var isPresentingSearch: Bool = false{
+//        didSet{
+//            let contactSelectionButton = self.navigationItem.rightBarButtonItem
+//            contactSelectionButton?.customView?.isHidden = isPresentingSearch
+//        }
+//    }
     
     var shouldSelectAllContactsOnLoad = false //If we need all contacts selected on controller load select true
     var tableView = UITableView()
@@ -450,7 +455,12 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
                 filteredContacts = try store.unifiedContacts(matching: predicate,
                     keysToFetch: allowedContactKeys())
                 //print("\(filteredContacts.count) count")
-                
+                switch self.subtitleCellValue {
+                case .email:
+                    filteredContacts = filteredContacts.filter{!$0.emailAddresses.isEmpty}
+                default:
+                    break
+                }
                 self.tableView.reloadData()
                 
             }
@@ -468,7 +478,7 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     }
     
     open func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        //self.isPresentingSearch = true
+//        self.isPresentingSearch = true
     }
     
     //MARK: - Update Appearance Of Send Invites Button
