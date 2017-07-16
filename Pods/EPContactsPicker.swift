@@ -148,6 +148,7 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
             tableView.register(cellNib, forCellReuseIdentifier: "Cell")
         }
     }
+    
 
     override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
