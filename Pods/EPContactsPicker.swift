@@ -56,13 +56,12 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
-    
-//    var isPresentingSearch: Bool = false{
-//        didSet{
-//            let contactSelectionButton = self.navigationItem.rightBarButtonItem
-//            contactSelectionButton?.customView?.isHidden = isPresentingSearch
-//        }
-//    }
+    //Hides navigation bar when search bar is active.
+    var isPresentingSearch: Bool = false{
+        didSet{
+            navigationController!.isNavigationBarHidden = isPresentingSearch
+        }
+    }
     
     var shouldSelectAllContactsOnLoad = false //If we need all contacts selected on controller load select true
     var tableView = UITableView()
@@ -100,6 +99,8 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
         if multiSelectEnabled {
             let selectAllContactsButton = UIBarButtonItem(title: EPGlobalConstants.SelectAllContactsButton.selectAllContactString, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onTouchSelectionButton))
             self.navigationItem.rightBarButtonItem = selectAllContactsButton
+//            self.navigationItem.
+           
         }
     }
     
@@ -471,14 +472,14 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     }
     
     open func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
+        isPresentingSearch = false
         DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
         })
     }
     
     open func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//        self.isPresentingSearch = true
+        isPresentingSearch = true
     }
     
     //MARK: - Update Appearance Of Send Invites Button
