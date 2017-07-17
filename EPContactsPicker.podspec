@@ -19,10 +19,11 @@ s.platform     = :ios, '9.0'
 s.requires_arc = true
 s.source_files = 'Pods'
 s.frameworks = 'Contacts', 'ContactsUI'
-s.resources        = ["Pods/EPContactCell.xib", "Pods/*.png"]
+s.source_files = "Pods/*.{swift}"
+
 s.resource_bundles = {
-'EPContactsPicker' => ['Pods/**/*.xib'],
-  'EPContactsPicker' => ['Pods/**/*.png']
+'EPContactsPicker' => ['Pods/**/*.{xib,png}']
 }
+
 
 end
