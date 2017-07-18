@@ -56,7 +56,10 @@ open class EPContact {
 		}
 		
 		for emailAddress in contact.emailAddresses {
-			guard let emailLabel = emailAddress.label else { continue }
+            var emailLabel = "email"
+            if emailAddress.label != nil {
+                emailLabel = emailAddress.label!
+            }
 			let email = emailAddress.value as String
 			
 			emails.append((email,emailLabel))

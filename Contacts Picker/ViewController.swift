@@ -20,13 +20,25 @@ class ViewController: UIViewController, EPPickerDelegate {
     // Dispose of any resources that can be recreated.
   }
 
-  @IBAction func onTouchShowMeContactsButton(_ sender: AnyObject) {
+  @IBAction func onTouchShowMeEmailContactsButton(_ sender: AnyObject) {
     
-    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:true, subtitleCellType: SubtitleCellValue.email)
+    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection: true, subtitleCellType: .email, selectAllContactsOnLoad: true, sendInvitesButtonEnabled: true)
     let navigationController = UINavigationController(rootViewController: contactPickerScene)
     self.present(navigationController, animated: true, completion: nil)
     
   }
+    @IBAction func onTouchShowMePhoneContactsButton(_ sender: Any) {
+        let contactPickerScene = EPContactsPicker(delegate: self, multiSelection: true, subtitleCellType: .phoneNumber, selectAllContactsOnLoad: false, sendInvitesButtonEnabled: true)
+        let navigationController = UINavigationController(rootViewController: contactPickerScene)
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    @IBAction func onTouchShowMeAllContactsButton(_ sender: Any) {
+        let contactPickerScene = EPContactsPicker(delegate: self, multiSelection: false)
+        let navigationController = UINavigationController(rootViewController: contactPickerScene)
+        self.present(navigationController, animated: true, completion: nil)
+    }
+
+    
     
 //MARK: EPContactsPicker delegates
     func epContactPicker(_: EPContactsPicker, didContactFetchFailed error : NSError)

@@ -15,8 +15,32 @@ class EPContactCell: UITableViewCell {
     @IBOutlet weak var contactImageView: UIImageView!
     @IBOutlet weak var contactInitialLabel: UILabel!
     @IBOutlet weak var contactContainerView: UIView!
+    @IBOutlet weak var checkMarkView: UIImageView!
+    
+    func getCheckMarkImage(named: String) -> UIImage {
+        let podBundle = Bundle(for: self.classForCoder)
+        var image = UIImage()
+        if let checkMarkImage = UIImage(named: named, in: podBundle, compatibleWith: nil){
+            image = checkMarkImage
+        }else{
+            assertionFailure("Could not load checkmark image")
+        }
+        return image
+    }
+    
     
     var contact: EPContact?
+    var contactSelected: Bool = false{
+        didSet{
+            var image = UIImage()
+            if contactSelected {
+                image = getCheckMarkImage(named: "CircularSelected_icon")
+            }else{
+                image = getCheckMarkImage(named: "CircularUnselected_icon")
+            }
+            checkMarkView.image = image
+        }
+    }
     
     override func awakeFromNib() {
         
