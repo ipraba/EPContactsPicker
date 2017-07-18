@@ -56,12 +56,6 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
-    //Hides navigation bar when search bar is active.
-    var isPresentingSearch: Bool = false{
-        didSet{
-            navigationController!.isNavigationBarHidden = isPresentingSearch
-        }
-    }
     
     var shouldSelectAllContactsOnLoad = false //If we need all contacts selected on controller load select true
     var tableView = UITableView()
@@ -77,14 +71,15 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
         inititlizeBarButtons()
         initializeSearchBar()
         reloadContacts()
+        
     }
     
     func initializeSearchBar() {
         self.resultSearchController = ( {
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
-            controller.dimsBackgroundDuringPresentation = false
-            controller.hidesNavigationBarDuringPresentation = false
+            controller.dimsBackgroundDuringPresentation = true//
+            controller.hidesNavigationBarDuringPresentation = true
             controller.searchBar.sizeToFit()
             controller.searchBar.delegate = self
             self.tableView.tableHeaderView = controller.searchBar
@@ -99,8 +94,6 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
         if multiSelectEnabled {
             let selectAllContactsButton = UIBarButtonItem(title: EPGlobalConstants.SelectAllContactsButton.selectAllContactString, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onTouchSelectionButton))
             self.navigationItem.rightBarButtonItem = selectAllContactsButton
-//            self.navigationItem.
-           
         }
     }
     
@@ -423,11 +416,7 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     
     func onTouchSendInvitesButton() {
         dismiss(animated: true, completion: {
-           /* if self.isPresentingSearch {
-                self.isPresentingSearch = false
-            } else { */
-                self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
-            //}
+            self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
         })
     }
     
@@ -445,42 +434,46 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
     {
         if let searchText = resultSearchController.searchBar.text , searchController.isActive {
             
-            let predicate: NSPredicate
+            var predicate: NSPredicate?
             if searchText.characters.count > 0 {
                 predicate = CNContact.predicateForContacts(matchingName: searchText)
             } else {
-                predicate = CNContact.predicateForContactsInContainer(withIdentifier: contactsStore!.defaultContainerIdentifier())
+                getContacts({ (contacts, error) in
+                    self.filteredContacts = contacts
+                })
             }
-            
-            let store = CNContactStore()
-            do {
-                filteredContacts = try store.unifiedContacts(matching: predicate,
-                    keysToFetch: allowedContactKeys())
-                //print("\(filteredContacts.count) count")
-                switch self.subtitleCellValue {
-                case .email:
-                    filteredContacts = filteredContacts.filter{!$0.emailAddresses.isEmpty}
-                default:
-                    break
+            if predicate != nil {
+                let store = CNContactStore()
+                do {
+                    filteredContacts = try store.unifiedContacts(matching: predicate!,
+                                                                 keysToFetch: allowedContactKeys())
+                    //print("\(filteredContacts.count) count")
+                    switch self.subtitleCellValue {
+                    case .email:
+                        filteredContacts = filteredContacts.filter{!$0.emailAddresses.isEmpty}
+                    default:
+                        break
+                    }
+                    self.tableView.reloadData()
+                    
                 }
-                self.tableView.reloadData()
-                
-            }
-            catch {
-                print("Error!")
+                catch {
+                    print("Error!")
+                }
             }
         }
     }
     
+    
+    
     open func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        isPresentingSearch = false
         DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
         })
     }
     
     open func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        isPresentingSearch = true
+
     }
     
     //MARK: - Update Appearance Of Send Invites Button
