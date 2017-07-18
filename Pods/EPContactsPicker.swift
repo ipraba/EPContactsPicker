@@ -33,7 +33,7 @@ public enum SubtitleCellValue{
     case organization
 }
 
-open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
+open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Properties
     
@@ -43,32 +43,43 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var orderedContacts = [String: [CNContact]]() //Contacts ordered in dicitonary alphabetically
     var sortedContactKeys = [String]()
     
-    var selectedContacts = [EPContact]()
+    var selectedContacts = [EPContact](){
+        didSet {
+            if sendInvitesButton != nil {
+                updateSendInvitesButtonTitle()
+                updateContactSelectionButton()
+            }
+        }
+    }
+
     var filteredContacts = [CNContact]()
     
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
-    var isPresentingSearch: Bool = false
+    var shouldSelectAllContactsOnLoad = false //If we need all contacts selected on controller load select true
+    var tableView = UITableView()
+    var sendInvitesButton: UIBarButtonItem?
+    var totalNumberOfLoadedContacts = 0
     
     // MARK: - Lifecycle Methods
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.title = EPGlobalConstants.Strings.contactsTitle
-
-        registerContactCell()
+        initializeTableView()
         inititlizeBarButtons()
         initializeSearchBar()
         reloadContacts()
+        
     }
     
     func initializeSearchBar() {
         self.resultSearchController = ( {
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
-            controller.dimsBackgroundDuringPresentation = false
-            controller.hidesNavigationBarDuringPresentation = false
+            controller.dimsBackgroundDuringPresentation = true//
+            controller.hidesNavigationBarDuringPresentation = true
             controller.searchBar.sizeToFit()
             controller.searchBar.delegate = self
             self.tableView.tableHeaderView = controller.searchBar
@@ -81,10 +92,33 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         self.navigationItem.leftBarButtonItem = cancelButton
         
         if multiSelectEnabled {
-            let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(onTouchDoneButton))
-            self.navigationItem.rightBarButtonItem = doneButton
-            
+            let selectAllContactsButton = UIBarButtonItem(title: EPGlobalConstants.SelectAllContactsButton.selectAllContactString, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onTouchSelectionButton))
+            self.navigationItem.rightBarButtonItem = selectAllContactsButton
         }
+    }
+    
+    func initializeTableView(){
+        tableView = UITableView(frame: view.bounds, style: .plain)
+        tableView.delegate = self
+        tableView.dataSource = self
+        registerContactCell()
+        view.addSubview(tableView)
+    }
+    
+    func initializeToolBarWithButton(){
+        let toolBar = UIToolbar(frame: CGRect(x: 0,
+                                              y: view.frame.height - EPGlobalConstants.SendInvitesButton.height,
+                                              width: view.frame.width,
+                                              height: EPGlobalConstants.SendInvitesButton.height))
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        sendInvitesButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(onTouchSendInvitesButton))
+        updateSendInvitesButtonTitle()
+        let attributes = [NSFontAttributeName:EPGlobalConstants.SendInvitesButton.titleFont!]
+        sendInvitesButton!.setTitleTextAttributes(attributes, for: [])
+        toolBar.items = [space, sendInvitesButton!, space]
+        toolBar.backgroundColor = UIColor.white
+        tableView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: tableView.frame.height - toolBar.frame.height)
+        view.addSubview(toolBar)
     }
     
     fileprivate func registerContactCell() {
@@ -107,6 +141,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             tableView.register(cellNib, forCellReuseIdentifier: "Cell")
         }
     }
+    
 
     override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -120,18 +155,30 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     }
     
     convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool) {
-        self.init(style: .plain)
+        self.init()
         self.multiSelectEnabled = multiSelection
         contactDelegate = delegate
     }
 
     convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, subtitleCellType: SubtitleCellValue) {
-        self.init(style: .plain)
+        self.init()
         self.multiSelectEnabled = multiSelection
         contactDelegate = delegate
         subtitleCellValue = subtitleCellType
     }
     
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, subtitleCellType: SubtitleCellValue, selectAllContactsOnLoad: Bool, sendInvitesButtonEnabled: Bool) {
+        self.init()
+        self.multiSelectEnabled = multiSelection
+        contactDelegate = delegate
+        subtitleCellValue = subtitleCellType
+        if selectAllContactsOnLoad {
+            shouldSelectAllContactsOnLoad = true
+        }
+        if sendInvitesButtonEnabled {
+            initializeToolBarWithButton()
+        }
+    }
     
     // MARK: - Contact Operations
   
@@ -139,9 +186,13 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         getContacts( {(contacts, error) in
             if (error == nil) {
                 DispatchQueue.main.async(execute: {
+                    if self.shouldSelectAllContactsOnLoad {
+                        self.selectAllContacts()
+                    }
                     self.tableView.reloadData()
                 })
             }
+            self.totalNumberOfLoadedContacts = contacts.count
         })
       }
   
@@ -190,22 +241,18 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 
                 do {
                     try contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
-                        //Ordering contacts based on alphabets in firstname
-                        contactsArray.append(contact)
-                        var key: String = "#"
-                        //If ordering has to be happening via family name change it here.
-                        if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
-                            key = firstLetter.uppercased()
-                        }
-                        var contacts = [CNContact]()
-                        
-                        if let segregatedContact = self.orderedContacts[key] {
-                            contacts = segregatedContact
-                        }
-                        contacts.append(contact)
-                        self.orderedContacts[key] = contacts
-
-                    })
+                        switch self.subtitleCellValue {
+                        case .email:
+                            if !contact.emailAddresses.isEmpty {
+                                self.insert(contact: contact, to: &contactsArray)
+                            }
+                        case .phoneNumber:
+                            if !contact.phoneNumbers.isEmpty {
+                                self.insert(contact: contact, to: &contactsArray)
+                            }
+                        default:
+                            self.insert(contact: contact, to: &contactsArray)
+                        }                    })
                     self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
                     if self.sortedContactKeys.first == "#" {
                         self.sortedContactKeys.removeFirst()
@@ -219,6 +266,23 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 }
             
         }
+    }
+    
+    func insert(contact: CNContact, to contactsArray: inout [CNContact]){
+        //Ordering contacts based on alphabets in firstname
+        contactsArray.append(contact)
+        var key: String = "#"
+        //If ordering has to be happening via family name change it here.
+        if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
+            key = firstLetter.uppercased()
+        }
+        var contacts = [CNContact]()
+        
+        if let segregatedContact = self.orderedContacts[key] {
+            contacts = segregatedContact
+        }
+        contacts.append(contact)
+        self.orderedContacts[key] = contacts
     }
     
     func allowedContactKeys() -> [CNKeyDescriptor]{
@@ -236,14 +300,31 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         ]
     }
     
+    func selectAllContacts(){
+        let array = Array(orderedContacts.values)
+        selectedContacts.removeAll()
+        for contactArray in array{
+            for contact in contactArray {
+                let ePContact = EPContact(contact: contact)
+                selectedContacts.append(ePContact)
+            }
+        }
+        tableView.reloadData()
+    }
+    
+    func deselectAllContacts() {
+        selectedContacts.removeAll()
+        tableView.reloadData()
+    }
+    
     // MARK: - Table View DataSource
     
-    override open func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         if resultSearchController.isActive { return 1 }
         return sortedContactKeys.count
     }
     
-    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if resultSearchController.isActive { return filteredContacts.count }
         if let contactsForSection = orderedContacts[sortedContactKeys[section]] {
             return contactsForSection.count
@@ -253,9 +334,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
 
     // MARK: - Table View Delegates
 
-    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! EPContactCell
-        cell.accessoryType = UITableViewCellAccessoryType.none
+        cell.contactSelected = false
         //Convert CNContact to EPContact
 		let contact: EPContact
         
@@ -266,32 +347,31 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
 				assertionFailure()
 				return UITableViewCell()
 			}
-
-			contact = EPContact(contact: contactsForSection[(indexPath as NSIndexPath).row])
+			contact = EPContact(contact: contactsForSection[(indexPath as NSIndexPath).row])  //
         }
 		
         if multiSelectEnabled  && selectedContacts.contains(where: { $0.contactId == contact.contactId }) {
-            cell.accessoryType = UITableViewCellAccessoryType.checkmark
+            cell.contactSelected = true
         }
 		
         cell.updateContactsinUI(contact, indexPath: indexPath, subtitleType: subtitleCellValue)
         return cell
     }
     
-    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let cell = tableView.cellForRow(at: indexPath) as! EPContactCell
         let selectedContact =  cell.contact!
         if multiSelectEnabled {
             //Keeps track of enable=ing and disabling contacts
-            if cell.accessoryType == UITableViewCellAccessoryType.checkmark {
-                cell.accessoryType = UITableViewCellAccessoryType.none
+            if cell.contactSelected == true {
+                cell.contactSelected = false
                 selectedContacts = selectedContacts.filter(){
                     return selectedContact.contactId != $0.contactId
                 }
             }
             else {
-                cell.accessoryType = UITableViewCellAccessoryType.checkmark
+                cell.contactSelected = true
                 selectedContacts.append(selectedContact)
             }
         }
@@ -306,22 +386,22 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         }
     }
     
-    override open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
     
-    override open func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+    public func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if resultSearchController.isActive { return 0 }
         tableView.scrollToRow(at: IndexPath(row: 0, section: index), at: UITableViewScrollPosition.top , animated: false)        
         return sortedContactKeys.index(of: title)!
     }
     
-    override  open func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         if resultSearchController.isActive { return nil }
         return sortedContactKeys
     }
 
-    override open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if resultSearchController.isActive { return nil }
         return sortedContactKeys[section]
     }
@@ -334,14 +414,18 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         })
     }
     
-    func onTouchDoneButton() {
+    func onTouchSendInvitesButton() {
         dismiss(animated: true, completion: {
-            if self.isPresentingSearch {
-                self.isPresentingSearch = false
-            } else {
-                self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
-            }
+            self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
         })
+    }
+    
+    func onTouchSelectionButton() {
+        if totalNumberOfLoadedContacts > selectedContacts.count {
+            selectAllContacts()
+        }else{
+            deselectAllContacts()
+        }
     }
     
     // MARK: - Search Actions
@@ -350,37 +434,70 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     {
         if let searchText = resultSearchController.searchBar.text , searchController.isActive {
             
-            let predicate: NSPredicate
+            var predicate: NSPredicate?
             if searchText.characters.count > 0 {
                 predicate = CNContact.predicateForContacts(matchingName: searchText)
             } else {
-                predicate = CNContact.predicateForContactsInContainer(withIdentifier: contactsStore!.defaultContainerIdentifier())
+                getContacts({ (contacts, error) in
+                    self.filteredContacts = contacts
+                })
             }
-            
-            let store = CNContactStore()
-            do {
-                filteredContacts = try store.unifiedContacts(matching: predicate,
-                    keysToFetch: allowedContactKeys())
-                //print("\(filteredContacts.count) count")
-                
-                self.tableView.reloadData()
-                
-            }
-            catch {
-                print("Error!")
+            if predicate != nil {
+                let store = CNContactStore()
+                do {
+                    filteredContacts = try store.unifiedContacts(matching: predicate!,
+                                                                 keysToFetch: allowedContactKeys())
+                    //print("\(filteredContacts.count) count")
+                    switch self.subtitleCellValue {
+                    case .email:
+                        filteredContacts = filteredContacts.filter{!$0.emailAddresses.isEmpty}
+                    default:
+                        break
+                    }
+                    self.tableView.reloadData()
+                    
+                }
+                catch {
+                    print("Error!")
+                }
             }
         }
     }
     
+    
+    
     open func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
         DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
         })
     }
     
     open func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        self.isPresentingSearch = true
+
+    }
+    
+    //MARK: - Update Appearance Of Send Invites Button
+    
+    func updateSendInvitesButtonTitle() {
+        let numberOfInvites = selectedContacts.count
+        var title = ""
+        if numberOfInvites > 0 {
+            title = "Send \(numberOfInvites) \(numberOfInvites == 1 ? "Invite" : "Invites")"
+            sendInvitesButton!.isEnabled = true
+        }else{
+            title = "Select Contacts"
+            sendInvitesButton!.isEnabled = false
+        }
+        sendInvitesButton!.title = title
+    }
+    
+    func updateContactSelectionButton(){
+        let contactSelectionButton = self.navigationItem.rightBarButtonItem
+        if totalNumberOfLoadedContacts > selectedContacts.count {
+            contactSelectionButton?.title = EPGlobalConstants.SelectAllContactsButton.selectAllContactString
+        }else{
+            contactSelectionButton?.title = EPGlobalConstants.SelectAllContactsButton.deselectAllContactsString
+        }
     }
     
 }
