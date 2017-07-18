@@ -437,12 +437,6 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
             var predicate: NSPredicate?
             if searchText.characters.count > 0 {
                 predicate = CNContact.predicateForContacts(matchingName: searchText)
-            } else {
-                getContacts({ (contacts, error) in
-                    self.filteredContacts = contacts
-                })
-            }
-            if predicate != nil {
                 let store = CNContactStore()
                 do {
                     filteredContacts = try store.unifiedContacts(matching: predicate!,
@@ -459,6 +453,14 @@ open class EPContactsPicker: UIViewController, UISearchResultsUpdating, UISearch
                 }
                 catch {
                     print("Error!")
+                }
+            } else {
+                let array = Array(orderedContacts.values)
+                filteredContacts.removeAll()
+                for contactArray in array{
+                    for contact in contactArray {
+                        filteredContacts.append(contact)
+                    }
                 }
             }
         }
