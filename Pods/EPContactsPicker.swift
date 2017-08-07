@@ -54,16 +54,20 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.title = EPGlobalConstants.Strings.contactsTitle
+		self.tableView.tableFooterView = UIView()
 
         registerContactCell()
         inititlizeBarButtons()
         initializeSearchBar()
-        reloadContacts()
+		DispatchQueue.main.async {
+			self.reloadContacts()
+		}
     }
     
     func initializeSearchBar() {
         self.resultSearchController = ( {
             let controller = UISearchController(searchResultsController: nil)
+			controller.hidesNavigationBarDuringPresentation = false
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
             controller.hidesNavigationBarDuringPresentation = false
@@ -129,18 +133,53 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         contactDelegate = delegate
         subtitleCellValue = subtitleCellType
     }
-    
+	
+	// MARK: - Loading UI Operations
+	
+	fileprivate func beginActivityIndicator(){
+		let loadView = UIView()
+		loadView.frame = self.view.frame
+		tableView.backgroundView = loadView
+		//self.navigationController?.view.addSubview(loadView)
+		
+		//add blurView
+		if #available(iOS 10.0, *) {
+			let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+			blurView.frame = loadView.frame
+			loadView.addSubview(blurView)
+		}else{
+			loadView.backgroundColor = UIColor.white
+		}
+		
+		//add loadView
+		let activityIndicator = UIActivityIndicatorView(frame: loadView.frame)
+		activityIndicator.center = self.view.center
+		activityIndicator.hidesWhenStopped = true
+		activityIndicator.color = UIColor.orange
+		loadView.addSubview(activityIndicator)
+		activityIndicator.startAnimating()
+	}
+	
+	fileprivate func stopActivityIndicator(){
+		tableView.backgroundView = UIView()
+	}
     
     // MARK: - Contact Operations
   
       open func reloadContacts() {
-        getContacts( {(contacts, error) in
-            if (error == nil) {
-                DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
-                })
-            }
-        })
+		DispatchQueue.main.async {
+			self.beginActivityIndicator()
+		}
+		DispatchQueue.global().async {
+			self.getContacts( {(contacts, error) in
+				if (error == nil) {
+					DispatchQueue.main.async(execute: {
+						self.tableView.reloadData()
+						self.stopActivityIndicator()
+					})
+				}
+			})
+		}
       }
   
     func getContacts(_ completion:  @escaping ContactsHandler) {
