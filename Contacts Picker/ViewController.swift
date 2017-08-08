@@ -23,7 +23,8 @@ class ViewController: UIViewController, EPPickerDelegate {
 
   @IBAction func onTouchShowMeContactsButton(_ sender: AnyObject) {
     
-    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:true, subtitleCellType: SubtitleCellValue.phoneNumber)
+//    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:true, subtitleCellType: SubtitleCellValue.phoneNumber)
+    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection: true, multiSelectionLimit: 2)
     let navigationController = UINavigationController(rootViewController: contactPickerScene)
     self.present(navigationController, animated: true, completion: nil)
     

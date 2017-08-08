@@ -50,6 +50,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
+    var multiSelectContactLimit : UInt = 0
     
     // MARK: - Lifecycle Methods
     
@@ -122,14 +123,30 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool) {
         self.init(style: .plain)
         self.multiSelectEnabled = multiSelection
-        contactDelegate = delegate
+        self.contactDelegate = delegate
     }
 
     convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, subtitleCellType: SubtitleCellValue) {
         self.init(style: .plain)
         self.multiSelectEnabled = multiSelection
-        contactDelegate = delegate
-        subtitleCellValue = subtitleCellType
+        self.contactDelegate = delegate
+        self.subtitleCellValue = subtitleCellType
+    }
+    
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, multiSelectionLimit: UInt) {
+    
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        self.multiSelectContactLimit = multiSelectionLimit
+        self.contactDelegate = delegate
+    }
+    
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, multiSelectionLimit: UInt, subtitleCellType: SubtitleCellValue) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        self.multiSelectContactLimit = multiSelectionLimit
+        self.subtitleCellValue = subtitleCellType
+        self.contactDelegate = delegate
     }
     
     
@@ -299,7 +316,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                     return selectedContact.contactId != $0.contactId
                 }
             }
-            else {
+            else if (self.multiSelectContactLimit == 0 || self.selectedContacts.count < Int(self.multiSelectContactLimit)) {
                 cell.accessoryType = UITableViewCellAccessoryType.checkmark
                 selectedContacts.append(selectedContact)
             }
@@ -373,7 +390,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 filteredContacts.removeAll()
                 
                 for contact in unifiedContacts {
-                    filteredContacts.append(EPContact.init(contact: contact))
+                    let epContact = EPContact.init(contact: contact)
+                    if (self.contactDelegate?.epContactPicker(self, shouldAddContact: epContact) == true){
+                        filteredContacts.append(EPContact.init(contact: contact))
+                    }
                 }
                 
                 self.tableView.reloadData()
