@@ -56,7 +56,11 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        self.title = EPGlobalConstants.Strings.contactsTitle
+        
+        
+        if self.title == nil {
+            self.title = EPGlobalConstants.Strings.contactsTitle
+        }
 
         registerContactCell()
         inititlizeBarButtons()
@@ -227,7 +231,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                             contacts.append(epContact)
                             
                             self.orderedContacts[key] = contacts
-                        }                        
+                        }
                     })
                     
                     
