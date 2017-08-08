@@ -15,6 +15,7 @@ public protocol EPPickerDelegate: class {
     func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+    func epContactPicker(_: EPContactsPicker, shouldAddContact contact: EPContact) -> Bool
 }
 
 public extension EPPickerDelegate {
@@ -22,6 +23,7 @@ public extension EPPickerDelegate {
 	func epContactPicker(_: EPContactsPicker, didCancel error: NSError) { }
 	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
+    func epContactPicker(_: EPContactsPicker, shouldAddContact contact: EPContact) -> Bool { return true }
 }
 
 typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
@@ -40,11 +42,11 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     open weak var contactDelegate: EPPickerDelegate?
     var contactsStore: CNContactStore?
     var resultSearchController = UISearchController()
-    var orderedContacts = [String: [CNContact]]() //Contacts ordered in dicitonary alphabetically
+    var orderedContacts = [String: [EPContact]]() //Contacts ordered in dicitonary alphabetically
     var sortedContactKeys = [String]()
     
     var selectedContacts = [EPContact]()
-    var filteredContacts = [CNContact]()
+    var filteredContacts = [EPContact]()
     
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
@@ -195,15 +197,24 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                         if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
                             key = firstLetter.uppercased()
                         }
-                        var contacts = [CNContact]()
+                        var contacts = [EPContact]()
                         
                         if let segregatedContact = self.orderedContacts[key] {
                             contacts = segregatedContact
                         }
-                        contacts.append(contact)
+                        
+                        let epContact = EPContact.init(contact: contact)
+                        
+                        if (self.contactDelegate?.epContactPicker(self, shouldAddContact: epContact) == true){
+                            contacts.append(epContact)
+                        }
+                        
                         self.orderedContacts[key] = contacts
 
                     })
+                    
+                    
+                    
                     self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
                     if self.sortedContactKeys.first == "#" {
                         self.sortedContactKeys.removeFirst()
@@ -258,14 +269,14 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
 		let contact: EPContact
         
         if resultSearchController.isActive {
-            contact = EPContact(contact: filteredContacts[(indexPath as NSIndexPath).row])
+            contact = filteredContacts[(indexPath as NSIndexPath).row]
         } else {
 			guard let contactsForSection = orderedContacts[sortedContactKeys[(indexPath as NSIndexPath).section]] else {
 				assertionFailure()
 				return UITableViewCell()
 			}
 
-			contact = EPContact(contact: contactsForSection[(indexPath as NSIndexPath).row])
+			contact = contactsForSection[(indexPath as NSIndexPath).row]
         }
 		
         if multiSelectEnabled  && selectedContacts.contains(where: { $0.contactId == contact.contactId }) {
@@ -352,10 +363,18 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             }
             
             let store = CNContactStore()
+            
             do {
-                filteredContacts = try store.unifiedContacts(matching: predicate,
+                
+                let unifiedContacts = try store.unifiedContacts(matching: predicate,
                     keysToFetch: allowedContactKeys())
                 //print("\(filteredContacts.count) count")
+                
+                filteredContacts.removeAll()
+                
+                for contact in unifiedContacts {
+                    filteredContacts.append(EPContact.init(contact: contact))
+                }
                 
                 self.tableView.reloadData()
                 

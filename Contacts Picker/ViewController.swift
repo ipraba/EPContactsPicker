@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Contacts
 
 class ViewController: UIViewController, EPPickerDelegate {
 
@@ -22,7 +23,7 @@ class ViewController: UIViewController, EPPickerDelegate {
 
   @IBAction func onTouchShowMeContactsButton(_ sender: AnyObject) {
     
-    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:true, subtitleCellType: SubtitleCellValue.email)
+    let contactPickerScene = EPContactsPicker(delegate: self, multiSelection:true, subtitleCellType: SubtitleCellValue.phoneNumber)
     let navigationController = UINavigationController(rootViewController: contactPickerScene)
     self.present(navigationController, animated: true, completion: nil)
     
@@ -49,6 +50,10 @@ class ViewController: UIViewController, EPPickerDelegate {
         for contact in contacts {
             print("\(contact.displayName())")
         }
+    }
+    
+    func epContactPicker(_: EPContactsPicker, shouldAddContact contact: EPContact) -> Bool {
+        return contact.hasPhoneNumbers()
     }
 
 }
