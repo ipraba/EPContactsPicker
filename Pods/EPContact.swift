@@ -67,6 +67,14 @@ open class EPContact {
         return firstName + " " + lastName
     }
     
+    open func hasPhoneNumbers() -> Bool {
+        return phoneNumbers.count > 0
+    }
+    
+    open func hasEmails() -> Bool {
+        return emails.count > 0
+    }
+    
     open func contactInitials() -> String {
         var initials = String()
 		
