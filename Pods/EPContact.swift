@@ -46,17 +46,17 @@ open class EPContact {
         }
         
 		for phoneNumber in contact.phoneNumbers {
-            		var phoneLabel = "phone"
-            		if let label = phoneNumber.label {
-            		    phoneLabel = label
-            		}
+            var phoneLabel = "phone"
+            if let label = phoneNumber.label {
+                phoneLabel = label
+            }
 			let phone = phoneNumber.value.stringValue
 			
 			phoneNumbers.append((phone,phoneLabel))
 		}
 		
 		for emailAddress in contact.emailAddresses {
-			guard let emailLabel = emailAddress.label else { continue }
+			let emailLabel = emailAddress.label ?? "email"
 			let email = emailAddress.value as String
 			
 			emails.append((email,emailLabel))
