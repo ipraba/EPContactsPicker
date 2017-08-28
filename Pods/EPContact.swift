@@ -37,7 +37,6 @@ open class EPContact {
         }
         
         if let birthdayDate = contact.birthday {
-            
             birthday = Calendar(identifier: Calendar.Identifier.gregorian).date(from: birthdayDate)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = EPGlobalConstants.Strings.birdtdayDateFormat
@@ -45,22 +44,22 @@ open class EPContact {
             birthdayString = dateFormatter.string(from: birthday!)
         }
         
-		for phoneNumber in contact.phoneNumbers {
-            		var phoneLabel = "phone"
-            		if let label = phoneNumber.label {
-            		    phoneLabel = label
-            		}
-			let phone = phoneNumber.value.stringValue
-			
-			phoneNumbers.append((phone,phoneLabel))
-		}
-		
-		for emailAddress in contact.emailAddresses {
-			guard let emailLabel = emailAddress.label else { continue }
-			let email = emailAddress.value as String
-			
-			emails.append((email,emailLabel))
-		}
+        for phoneNumber in contact.phoneNumbers {
+            var phoneLabel = "phone"
+            if let label = phoneNumber.label {
+                phoneLabel = label
+            }
+            let phone = phoneNumber.value.stringValue
+            
+            phoneNumbers.append((phone,phoneLabel))
+        }
+        
+        for emailAddress in contact.emailAddresses {
+            let emailLabel = emailAddress.label ?? "email"
+            let email = emailAddress.value as String
+            
+            emails.append((email,emailLabel))
+        }
     }
 	
     open func displayName() -> String {
