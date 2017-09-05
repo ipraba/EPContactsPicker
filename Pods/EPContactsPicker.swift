@@ -333,6 +333,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     }
     
     func onTouchDoneButton() {
+        if resultSearchController.isActive {
+            resultSearchController.dismiss(animated: false, completion: nil)
+        }
         dismiss(animated: true, completion: {
             self.contactDelegate?.epContactPicker(self, didSelectMultipleContacts: self.selectedContacts)
         })
