@@ -86,24 +86,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     }
     
     fileprivate func registerContactCell() {
-        
-        let podBundle = Bundle(for: self.classForCoder)
-        if let bundleURL = podBundle.url(forResource: EPGlobalConstants.Strings.bundleIdentifier, withExtension: "bundle") {
-            
-            if let bundle = Bundle(url: bundleURL) {
-                
-                let cellNib = UINib(nibName: EPGlobalConstants.Strings.cellNibIdentifier, bundle: bundle)
-                tableView.register(cellNib, forCellReuseIdentifier: "Cell")
-            }
-            else {
-                assertionFailure("Could not load bundle")
-            }
-        }
-        else {
-            
-            let cellNib = UINib(nibName: EPGlobalConstants.Strings.cellNibIdentifier, bundle: nil)
-            tableView.register(cellNib, forCellReuseIdentifier: "Cell")
-        }
+        let bundle = Bundle(for: self.classForCoder)
+        let cellNib = UINib(nibName: EPGlobalConstants.Strings.cellNibIdentifier, bundle: bundle)
+        tableView.register(cellNib, forCellReuseIdentifier: "Cell")
     }
 
     override open func didReceiveMemoryWarning() {
