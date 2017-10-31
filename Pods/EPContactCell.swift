@@ -31,13 +31,6 @@ class EPContactCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-//    func updateInitialsColorForIndexPath(_ indexpath: IndexPath) {
-//        //Applies color to Initial Label
-//        let colorArray = [EPGlobalConstants.Colors.amethystColor,EPGlobalConstants.Colors.asbestosColor,EPGlobalConstants.Colors.emeraldColor,EPGlobalConstants.Colors.peterRiverColor,EPGlobalConstants.Colors.pomegranateColor,EPGlobalConstants.Colors.pumpkinColor,EPGlobalConstants.Colors.sunflowerColor]
-//        let randomValue = (indexpath.row + indexpath.section) % colorArray.count
-//        contactInitialLabel.backgroundColor = colorArray[randomValue]
-//    }
- 
     func updateContactsinUI(_ contact: EPContact, indexPath: IndexPath, subtitleType: SubtitleCellValue) {
         self.contact = contact
         //Update all UI in the cell here
