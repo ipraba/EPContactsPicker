@@ -138,7 +138,21 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         contactDelegate = delegate
         subtitleCellValue = subtitleCellType
     }
-    
+  
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, multiSelectionLimit: UInt) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        self.multiSelectContactLimit = multiSelectionLimit
+        self.contactDelegate = delegate
+    }
+  
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, multiSelectionLimit: UInt, subtitleCellType: SubtitleCellValue) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        self.multiSelectContactLimit = multiSelectionLimit
+        self.subtitleCellValue = subtitleCellType
+        self.contactDelegate = delegate
+    }
     
     // MARK: - Contact Operations
   
