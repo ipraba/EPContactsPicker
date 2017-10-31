@@ -45,6 +45,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     var selectedContacts = [EPContact]()
     var filteredContacts = [CNContact]()
+    var multiSelectContactLimit : UInt = 0
     
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
@@ -54,7 +55,13 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.title = EPGlobalConstants.Strings.contactsTitle
-
+        self.view.backgroundColor = UIColor.clear
+        let bgView = UIView()
+        bgView.backgroundColor = UIColor.clear
+        self.tableView.backgroundView = bgView
+        self.tableView.backgroundColor = UIColor.clear
+        self.tableView.sectionIndexColor = UIColor.white
+        self.tableView.sectionIndexBackgroundColor = UIColor.clear
         registerContactCell()
         inititlizeBarButtons()
         initializeSearchBar()
@@ -64,12 +71,14 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     func initializeSearchBar() {
         self.resultSearchController = ( {
             let controller = UISearchController(searchResultsController: nil)
+            controller.searchBar.barStyle = UIBarStyle.black
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
             controller.hidesNavigationBarDuringPresentation = false
             controller.searchBar.sizeToFit()
             controller.searchBar.delegate = self
             self.tableView.tableHeaderView = controller.searchBar
+          
             return controller
         })()
     }
@@ -270,6 +279,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
 		
         if multiSelectEnabled  && selectedContacts.contains(where: { $0.contactId == contact.contactId }) {
             cell.accessoryType = UITableViewCellAccessoryType.checkmark
+          cell.tintColor = EPGlobalConstants.Colors.nxYellow
         }
 		
         cell.updateContactsinUI(contact, indexPath: indexPath, subtitleType: subtitleCellValue)
@@ -290,6 +300,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             }
             else {
                 cell.accessoryType = UITableViewCellAccessoryType.checkmark
+                cell.tintColor = EPGlobalConstants.Colors.nxYellow
                 selectedContacts.append(selectedContact)
             }
         }
@@ -319,11 +330,20 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         return sortedContactKeys
     }
 
-    override open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if resultSearchController.isActive { return nil }
-        return sortedContactKeys[section]
-    }
-    
+//    override open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        if resultSearchController.isActive { return nil }
+//        return sortedContactKeys[section]
+//    }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     // MARK: - Button Actions
     
     func onTouchCancelButton() {
