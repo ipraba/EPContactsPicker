@@ -329,20 +329,6 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         if resultSearchController.isActive { return nil }
         return sortedContactKeys
     }
-
-//    override open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        if resultSearchController.isActive { return nil }
-//        return sortedContactKeys[section]
-//    }
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
     // MARK: - Button Actions
     
