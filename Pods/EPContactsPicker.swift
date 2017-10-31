@@ -298,7 +298,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                     return selectedContact.contactId != $0.contactId
                 }
             }
-            else {
+            else if (self.multiSelectContactLimit == 0 || self.selectedContacts.count < Int(self.multiSelectContactLimit)) {
                 cell.accessoryType = UITableViewCellAccessoryType.checkmark
                 cell.tintColor = EPGlobalConstants.Colors.nxYellow
                 selectedContacts.append(selectedContact)
