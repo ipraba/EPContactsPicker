@@ -15,6 +15,8 @@ public protocol EPPickerDelegate: class {
     func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+  
+  func sendButton(enabled: Bool)
 }
 
 public extension EPPickerDelegate {
@@ -23,7 +25,7 @@ public extension EPPickerDelegate {
 	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
   
-  
+  func sendButton(enabled: Bool) { }
 }
 
 typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
@@ -315,6 +317,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 cell.tintColor = EPGlobalConstants.Colors.nxYellow
                 selectedContacts.append(selectedContact)
             }
+          
+          self.contactDelegate?.sendButton(enabled: self.multiSelectContactLimit == 0 ||
+            self.selectedContacts.count == self.multiSelectContactLimit)
         }
         else {
             //Single selection code
