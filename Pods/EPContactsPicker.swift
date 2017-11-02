@@ -22,6 +22,8 @@ public extension EPPickerDelegate {
 	func epContactPicker(_: EPContactsPicker, didCancel error: NSError) { }
 	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
+  
+  
 }
 
 typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
@@ -139,20 +141,16 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         subtitleCellValue = subtitleCellType
     }
   
-    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, multiSelectionLimit: UInt) {
-        self.init(style: .plain)
-        self.multiSelectEnabled = multiSelection
-        self.multiSelectContactLimit = multiSelectionLimit
-        self.contactDelegate = delegate
-    }
+  convenience public init(delegate: EPPickerDelegate?, multiSelection: Bool, subtitleCellType: SubtitleCellValue, multiSelectContactLimit: UInt) {
+    self.init(delegate: delegate, multiSelection: multiSelection, subtitleCellType: subtitleCellType)
+    self.multiSelectContactLimit = multiSelectContactLimit
+  }
   
-    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, multiSelectionLimit: UInt, subtitleCellType: SubtitleCellValue) {
-        self.init(style: .plain)
-        self.multiSelectEnabled = multiSelection
-        self.multiSelectContactLimit = multiSelectionLimit
-        self.subtitleCellValue = subtitleCellType
-        self.contactDelegate = delegate
-    }
+  convenience public init(delegate: EPPickerDelegate?, multiSelection: Bool, multiSelectionContactLimit: UInt) {
+    self.init(delegate: delegate, multiSelection: multiSelection)
+    self.multiSelectContactLimit = multiSelectionContactLimit
+  }
+    
     
     // MARK: - Contact Operations
   
