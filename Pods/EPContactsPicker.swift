@@ -179,19 +179,6 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             case CNAuthorizationStatus.denied, CNAuthorizationStatus.restricted:
                 //User has denied the current app to access the contacts.
                 self.contactDelegate?.presentAlert()
-                
-//                let productName = Bundle.main.infoDictionary!["CFBundleName"]!
-//
-//                let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertControllerStyle.alert)
-//                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {  action in
-//                    completion([], error)
-//                    self.dismiss(animated: true, completion: {
-//                        self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
-//                    })
-//                })
-//                alert.addAction(okAction)
-//                self.present(alert, animated: true, completion: nil)
-          
             case CNAuthorizationStatus.notDetermined:
                 //This case means the user is prompted for the first time for allowing contacts
                 contactsStore?.requestAccess(for: CNEntityType.contacts, completionHandler: { (granted, error) -> Void in
