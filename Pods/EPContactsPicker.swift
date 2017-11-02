@@ -196,6 +196,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             case  CNAuthorizationStatus.authorized:
                 //Authorization granted by user for this app.
                 var contactsArray = [CNContact]()
+                let addContact = CNMutableContact()
+                addContact.givenName = "+ Add phone number"
+                contactsArray.insert(addContact, at: 0)
+                
                 
                 let contactFetchRequest = CNContactFetchRequest(keysToFetch: allowedContactKeys())
                 
@@ -222,6 +226,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                         self.sortedContactKeys.removeFirst()
                         self.sortedContactKeys.append("#")
                     }
+                  
+                  let key = self.sortedContactKeys.first
+                  self.orderedContacts[key!]?.insert(addContact, at: 0)
+                  
                     completion(contactsArray, nil)
                 }
                 //Catching exception as enumerateContactsWithFetchRequest can throw errors
@@ -246,6 +254,70 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             CNContactEmailAddressesKey as CNKeyDescriptor,
         ]
     }
+  
+  func newContact() {
+    let alertController = UIAlertController(title: "Add Contact", message: "", preferredStyle: .alert)
+    
+    let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: { _ in
+      alertController.dismiss(animated: true, completion: nil)
+    })
+    
+    alertController.addAction(cancelAction)
+    
+    let action = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
+      let fNameField = (alertController.textFields![0] as UITextField).text ?? ""
+      let lNameField = (alertController.textFields![1] as UITextField).text ?? ""
+      let phoneField = (alertController.textFields![2] as UITextField).text ?? ""
+      
+      if (fNameField != "" || lNameField != "") && phoneField != "" {
+        // create a new contact
+        let contact = CNMutableContact()
+        contact.givenName = fNameField
+        contact.familyName = lNameField
+        let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                         value: CNPhoneNumber(stringValue: phoneField))
+        contact.phoneNumbers.append(phoneNumber)
+        
+        let key = self.sortedContactKeys.first
+        self.orderedContacts[key!]?.insert(contact, at: 1)
+        self.tableView.reloadData()
+        let indexPath = IndexPath(item: 1, section: 0)
+        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: indexPath)
+      } else {
+        let errorAlert = UIAlertController(title: "Error", message: "Please input name AND phone number", preferredStyle: .alert)
+        errorAlert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { alert -> Void in
+          self.present(alertController, animated: true, completion: nil)
+        }))
+        self.present(errorAlert, animated: true, completion: nil)
+      }
+    })
+    
+    alertController.addAction(action)
+    
+    alertController.addTextField(configurationHandler: { (textField) -> Void in
+      textField.placeholder = "First Name"
+      textField.textAlignment = .center
+      textField.autocapitalizationType = .words
+      textField.borderStyle = .roundedRect
+    })
+    
+    alertController.addTextField(configurationHandler: { (textField) -> Void in
+      textField.placeholder = "Last Name"
+      textField.textAlignment = .center
+      textField.autocapitalizationType = .words
+      textField.borderStyle = .roundedRect
+    })
+    
+    alertController.addTextField(configurationHandler: { (textField) -> Void in
+      textField.placeholder = "Phone Number"
+      textField.textAlignment = .center
+      textField.keyboardType = .decimalPad
+      textField.borderStyle = .roundedRect
+    })
+    
+    self.present(alertController, animated: true, completion: nil)
+  }
     
     // MARK: - Table View DataSource
     
@@ -291,9 +363,14 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     }
     
     override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let cell = tableView.cellForRow(at: indexPath) as! EPContactCell
         let selectedContact =  cell.contact!
+      if selectedContact.firstName == "+ Add phone number" {
+        // add new contact
+        newContact()
+        return
+      }
+      
         if multiSelectEnabled {
             //Keeps track of enable=ing and disabling contacts
             if cell.accessoryType == UITableViewCellAccessoryType.checkmark {
