@@ -364,6 +364,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         }
 		
         cell.updateContactsinUI(contact, indexPath: indexPath, subtitleType: subtitleCellValue)
+      if indexPath.row == 0 && indexPath.section == 0 {
+        cell.contactDetailTextLabel.text = ""
+      }
+      
         return cell
     }
     
