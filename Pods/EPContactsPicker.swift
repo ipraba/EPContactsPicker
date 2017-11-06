@@ -255,6 +255,33 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         ]
     }
   
+  fileprivate func addContactAction(_ alertController: UIAlertController) {
+    let nameField = (alertController.textFields![0] as UITextField).text ?? ""
+    let phoneField = (alertController.textFields![1] as UITextField).text ?? ""
+    
+    if nameField != "" && phoneField != "" {
+      // create a new contact
+      let contact = CNMutableContact()
+      contact.givenName = nameField
+      let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                       value: CNPhoneNumber(stringValue: phoneField))
+      contact.phoneNumbers.append(phoneNumber)
+      
+      let key = self.sortedContactKeys.first
+      self.orderedContacts[key!]?.insert(contact, at: 1)
+      self.tableView.reloadData()
+      let indexPath = IndexPath(item: 1, section: 0)
+      self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+      self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: indexPath)
+    } else {
+      let errorAlert = UIAlertController(title: "Error", message: "Please input name AND phone number", preferredStyle: .alert)
+      errorAlert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { alert -> Void in
+        self.present(alertController, animated: true, completion: nil)
+      }))
+      self.present(errorAlert, animated: true, completion: nil)
+    }
+  }
+  
   func newContact() {
     let alertController = UIAlertController(title: "Add Contact", message: "", preferredStyle: .alert)
     
@@ -265,65 +292,25 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     alertController.addAction(cancelAction)
     
     let action = UIAlertAction(title: "OK", style: .default, handler: { alert -> Void in
-      let nameField = (alertController.textFields![0] as UITextField).text ?? ""
-      let phoneField = (alertController.textFields![1] as UITextField).text ?? ""
-      
-      if nameField != "" && phoneField != "" {
-        // create a new contact
-        let contact = CNMutableContact()
-        contact.givenName = nameField
-
-        let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
-                                         value: CNPhoneNumber(stringValue: phoneField))
-        contact.phoneNumbers.append(phoneNumber)
-        
-        let key = self.sortedContactKeys.first
-        self.orderedContacts[key!]?.insert(contact, at: 1)
-        self.tableView.reloadData()
-        let indexPath = IndexPath(item: 1, section: 0)
-        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-        self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: indexPath)
-      } else {
-        let errorAlert = UIAlertController(title: "Error", message: "Please input name AND phone number", preferredStyle: .alert)
-        errorAlert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { alert -> Void in
-          self.present(alertController, animated: true, completion: nil)
-        }))
-        self.present(errorAlert, animated: true, completion: nil)
-      }
+      self.addContactAction(alertController)
     })
     
     alertController.addAction(action)
     
     alertController.addTextField(configurationHandler: { (textField) -> Void in
-      
       textField.autocapitalizationType = .words
-      textField.attributedPlaceholder = NSAttributedString(string: "Name",
-                                                           attributes: [NSForegroundColorAttributeName: UIColor.black])
-      textField.font = UIFont(name: "HelveticaNeue", size: 14.0)!
-      let heightConstraint = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal,
-                                                toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25)
-      textField.addConstraint(heightConstraint)
-      
+      self.design(textField: textField, placeholderText: "Name")
     })
     
     alertController.addTextField(configurationHandler: { (textField) -> Void in
       textField.keyboardType = .decimalPad
-
-      textField.attributedPlaceholder = NSAttributedString(string: "Number",
-                                                           attributes: [NSForegroundColorAttributeName: UIColor.black])
-      textField.font = UIFont(name: "HelveticaNeue", size: 14.0)!
-      let heightConstraint = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal,
-                                                toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25)
-      textField.addConstraint(heightConstraint)
+      self.design(textField: textField, placeholderText: "Number")
     })
-    
     
     // Background color
     let backView = alertController.view.subviews.last?.subviews.last
     backView?.layer.cornerRadius = 6.0
     backView?.backgroundColor = EPGlobalConstants.Colors.grey
-    
-    
     
     self.present(alertController, animated: true, completion: nil)
   }
@@ -342,6 +329,15 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         }
         return 0
     }
+  
+  func design(textField: UITextField, placeholderText: String) {
+    textField.attributedPlaceholder = NSAttributedString(string: placeholderText,
+                                                         attributes: [NSForegroundColorAttributeName: UIColor.black])
+    textField.font = UIFont(name: "HelveticaNeue", size: 14.0)!
+    let heightConstraint = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25)
+    textField.addConstraint(heightConstraint)
+  }
 
     // MARK: - Table View Delegates
 
