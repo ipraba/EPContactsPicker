@@ -16,7 +16,7 @@ public protocol EPPickerDelegate: class {
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
   
-  func sendButton(enabled: Bool)
+  func sendButton(enabled: Bool, selectedContacts: [EPContact])
   func presentAlert()
 }
 
@@ -26,7 +26,7 @@ public extension EPPickerDelegate {
 	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
   
-  func sendButton(enabled: Bool) { }
+  func sendButton(enabled: Bool, selectedContacts: [EPContact]) { }
   func presentAlert() { }
 }
 
@@ -43,7 +43,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     // MARK: - Properties
     
-    open weak var contactDelegate: EPPickerDelegate?
+    open weak var contactDelegate: EPPickerDelegate? 
     var contactsStore: CNContactStore?
     var resultSearchController = UISearchController()
     var orderedContacts = [String: [CNContact]]() //Contacts ordered in dicitonary alphabetically
@@ -389,9 +389,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 cell.tintColor = EPGlobalConstants.Colors.nxYellow
                 selectedContacts.append(selectedContact)
             }
-          
-          self.contactDelegate?.sendButton(enabled: self.multiSelectContactLimit == 0 ||
-            self.selectedContacts.count == self.multiSelectContactLimit)
+          let enabled = self.multiSelectContactLimit == 0
+                        || self.selectedContacts.count == self.multiSelectContactLimit
+          self.contactDelegate?.sendButton(enabled: enabled, selectedContacts: self.selectedContacts)
         }
         else {
             //Single selection code
