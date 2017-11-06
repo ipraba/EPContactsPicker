@@ -255,6 +255,15 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         ]
     }
   
+  fileprivate func design(textField: UITextField, placeholderText: String) {
+    textField.attributedPlaceholder = NSAttributedString(string: placeholderText,
+                                                         attributes: [NSForegroundColorAttributeName: UIColor.black])
+    textField.font = UIFont(name: "HelveticaNeue", size: 14.0)!
+    let heightConstraint = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal,
+                                              toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25)
+    textField.addConstraint(heightConstraint)
+  }
+  
   fileprivate func addContactAction(_ alertController: UIAlertController) {
     let nameField = (alertController.textFields![0] as UITextField).text ?? ""
     let phoneField = (alertController.textFields![1] as UITextField).text ?? ""
@@ -330,15 +339,6 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         return 0
     }
   
-  func design(textField: UITextField, placeholderText: String) {
-    textField.attributedPlaceholder = NSAttributedString(string: placeholderText,
-                                                         attributes: [NSForegroundColorAttributeName: UIColor.black])
-    textField.font = UIFont(name: "HelveticaNeue", size: 14.0)!
-    let heightConstraint = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal,
-                                              toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25)
-    textField.addConstraint(heightConstraint)
-  }
-
     // MARK: - Table View Delegates
 
     override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
