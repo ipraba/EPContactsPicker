@@ -31,3 +31,28 @@ extension String {
         })
     }
 }
+
+extension UIAlertController {
+  func changeFont(view:UIView, font:UIFont) {
+    for item in view.subviews {
+      if item.isKind(of: UICollectionView.self) {
+        let col = item as! UICollectionView
+        for  row in col.subviews{
+          changeFont(view: row, font: font)
+        }
+      }
+      if item.isKind(of: UILabel.self) {
+        let label = item as! UILabel
+        label.font = font
+      }else {
+        changeFont(view: item, font: font)
+      }
+      
+    }
+  }
+  open override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+    let font = UIFont(name: "HelveticaNeue-Medium", size: 17.0)
+    changeFont(view: self.view, font: font! )
+  }
+}
