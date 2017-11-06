@@ -264,16 +264,15 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     alertController.addAction(cancelAction)
     
-    let action = UIAlertAction(title: "Add", style: .default, handler: { alert -> Void in
-      let fNameField = (alertController.textFields![0] as UITextField).text ?? ""
-      let lNameField = (alertController.textFields![1] as UITextField).text ?? ""
-      let phoneField = (alertController.textFields![2] as UITextField).text ?? ""
+    let action = UIAlertAction(title: "OK", style: .default, handler: { alert -> Void in
+      let nameField = (alertController.textFields![0] as UITextField).text ?? ""
+      let phoneField = (alertController.textFields![1] as UITextField).text ?? ""
       
-      if (fNameField != "" || lNameField != "") && phoneField != "" {
+      if nameField != "" && phoneField != "" {
         // create a new contact
         let contact = CNMutableContact()
-        contact.givenName = fNameField
-        contact.familyName = lNameField
+        contact.givenName = nameField
+
         let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
                                          value: CNPhoneNumber(stringValue: phoneField))
         contact.phoneNumbers.append(phoneNumber)
@@ -296,25 +295,35 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     alertController.addAction(action)
     
     alertController.addTextField(configurationHandler: { (textField) -> Void in
-      textField.placeholder = "First Name"
-      textField.textAlignment = .center
+      
       textField.autocapitalizationType = .words
-      textField.borderStyle = .roundedRect
+      textField.attributedPlaceholder = NSAttributedString(string: "Name",
+                                                           attributes: [NSForegroundColorAttributeName: UIColor.black])
+      textField.font = UIFont(name: "HelveticaNeue", size: 14.0)!
+      let heightConstraint = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal,
+                                                toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25)
+      textField.addConstraint(heightConstraint)
+      
     })
     
     alertController.addTextField(configurationHandler: { (textField) -> Void in
-      textField.placeholder = "Last Name"
-      textField.textAlignment = .center
-      textField.autocapitalizationType = .words
-      textField.borderStyle = .roundedRect
-    })
-    
-    alertController.addTextField(configurationHandler: { (textField) -> Void in
-      textField.placeholder = "Phone Number"
-      textField.textAlignment = .center
       textField.keyboardType = .decimalPad
-      textField.borderStyle = .roundedRect
+
+      textField.attributedPlaceholder = NSAttributedString(string: "Number",
+                                                           attributes: [NSForegroundColorAttributeName: UIColor.black])
+      textField.font = UIFont(name: "HelveticaNeue", size: 14.0)!
+      let heightConstraint = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal,
+                                                toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25)
+      textField.addConstraint(heightConstraint)
     })
+    
+    
+    // Background color
+    let backView = alertController.view.subviews.last?.subviews.last
+    backView?.layer.cornerRadius = 6.0
+    backView?.backgroundColor = EPGlobalConstants.Colors.grey
+    
+    
     
     self.present(alertController, animated: true, completion: nil)
   }

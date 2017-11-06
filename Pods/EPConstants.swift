@@ -23,6 +23,7 @@ struct EPGlobalConstants {
 
 //MARK: Color Constants
     struct Colors {
+      static let grey = UIColor(red: 243 / 255.0, green: 243 / 255.0, blue: 243 / 255.0, alpha: 1.0)
       static let lightGrey = UIColor(red: 203 / 255.0, green: 203 / 255.0, blue: 203 / 255.0, alpha: 1.0)
       static let nxYellow = UIColor(red: 251 / 255.0, green: 176 / 255.0, blue: 64 / 255.0, alpha: 1.0)
     }
