@@ -11,7 +11,7 @@ import Contacts
 
 
 public protocol EPPickerDelegate: class {
-	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
+    func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
     func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
     func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
@@ -21,13 +21,13 @@ public protocol EPPickerDelegate: class {
 }
 
 public extension EPPickerDelegate {
-	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError) { }
-	func epContactPicker(_: EPContactsPicker, didCancel error: NSError) { }
-	func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
-	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
+    func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError) { }
+    func epContactPicker(_: EPContactsPicker, didCancel error: NSError) { }
+    func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
+    func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
   
-  func enableSendButton(enabled: Bool, selectedContacts: [EPContact]) { }
-  func presentPermissionsAlert() { }
+    func enableSendButton(enabled: Bool, selectedContacts: [EPContact]) { }
+    func presentPermissionsAlert() { }
 }
 
 typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
