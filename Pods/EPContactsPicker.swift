@@ -14,10 +14,10 @@ public protocol EPPickerDelegate: class {
 	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
     func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
-	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+    func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
   
-  func enableSendButton(enabled: Bool, selectedContacts: [EPContact])
-  func presentAlert()
+    func enableSendButton(enabled: Bool, selectedContacts: [EPContact])
+    func presentPermissionsAlert()
 }
 
 public extension EPPickerDelegate {
@@ -27,7 +27,7 @@ public extension EPPickerDelegate {
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
   
   func enableSendButton(enabled: Bool, selectedContacts: [EPContact]) { }
-  func presentAlert() { }
+  func presentPermissionsAlert() { }
 }
 
 typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
@@ -178,7 +178,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         switch CNContactStore.authorizationStatus(for: CNEntityType.contacts) {
             case CNAuthorizationStatus.denied, CNAuthorizationStatus.restricted:
                 //User has denied the current app to access the contacts.
-                self.contactDelegate?.presentAlert()
+                self.contactDelegate?.presentPermissionsAlert()
             case CNAuthorizationStatus.notDetermined:
                 //This case means the user is prompted for the first time for allowing contacts
                 contactsStore?.requestAccess(for: CNEntityType.contacts, completionHandler: { (granted, error) -> Void in
@@ -265,8 +265,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
   }
   
   fileprivate func addContactAction(_ alertController: UIAlertController) {
-    let nameField = (alertController.textFields![0] as UITextField).text ?? ""
-    let phoneField = (alertController.textFields![1] as UITextField).text ?? ""
+    guard let nameField = (alertController.textFields![0] as UITextField).text,
+          let phoneField = (alertController.textFields![1] as UITextField).text else {
+        return
+    }
     
     if nameField != "" && phoneField != "" {
       // create a new contact
@@ -276,8 +278,12 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                                        value: CNPhoneNumber(stringValue: phoneField))
       contact.phoneNumbers.append(phoneNumber)
       
-      let key = self.sortedContactKeys.first
-      self.orderedContacts[key!]?.insert(contact, at: 1)
+      guard let key = self.sortedContactKeys.first,
+            var orderedKeyContacts = self.orderedContacts[key] else {
+        return
+      }
+      
+      orderedKeyContacts.insert(contact, at: 1)
       self.tableView.reloadData()
       let indexPath = IndexPath(item: 1, section: 0)
       self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
@@ -291,7 +297,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     }
   }
   
-  func newContact() {
+  func presenetNewContactScreen() {
     let alertController = UIAlertController(title: "Add Contact", message: "", preferredStyle: .alert)
     
     let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: { _ in
@@ -360,7 +366,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
 		
         if multiSelectEnabled  && selectedContacts.contains(where: { $0.contactId == contact.contactId }) {
             cell.accessoryType = UITableViewCellAccessoryType.checkmark
-          cell.tintColor = EPGlobalConstants.Colors.nxYellow
+            cell.tintColor = EPGlobalConstants.Colors.nxYellow
         }
 		
         cell.updateContactsinUI(contact, indexPath: indexPath, subtitleType: subtitleCellValue)
@@ -374,10 +380,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! EPContactCell
         let selectedContact =  cell.contact!
-      if selectedContact.firstName == "+ Add phone number" {
-        // add new contact
-        newContact()
-        return
+        if selectedContact.firstName == "+ Add phone number" {
+          // add new contact
+          presenetNewContactScreen()
+          return
       }
       
         if multiSelectEnabled {
