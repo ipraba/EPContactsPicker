@@ -279,17 +279,19 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
       contact.phoneNumbers.append(phoneNumber)
       
       guard let key = self.sortedContactKeys.first,
-            var orderedKeyContacts = self.orderedContacts[key] else {
+        var keysContacts = self.orderedContacts[key] else {
         return
       }
       
-      orderedKeyContacts.insert(contact, at: 1)
+      keysContacts.insert(contact, at: 1)
+      self.orderedContacts[key] = keysContacts
+      
       self.tableView.reloadData()
       let indexPath = IndexPath(item: 1, section: 0)
       self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
       self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: indexPath)
     } else {
-      let errorAlert = UIAlertController(title: "Error", message: "Please input name AND phone number", preferredStyle: .alert)
+      let errorAlert = UIAlertController(title: "Error", message: "Please input name and phone number", preferredStyle: .alert)
       errorAlert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { alert -> Void in
         self.present(alertController, animated: true, completion: nil)
       }))
