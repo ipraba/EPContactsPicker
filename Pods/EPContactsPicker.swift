@@ -16,7 +16,7 @@ public protocol EPPickerDelegate: class {
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
     func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
   
-    func enableSendButton(enabled: Bool, selectedContacts: [EPContact])
+    func updateSendButton(enabled: Bool, selectedContacts: [EPContact])
     func presentContacPermissionAlert()
 }
 
@@ -26,7 +26,7 @@ public extension EPPickerDelegate {
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact) { }
     func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
   
-    func enableSendButton(enabled: Bool, selectedContacts: [EPContact]) { }
+    func updateSendButton(enabled: Bool, selectedContacts: [EPContact]) { }
     func presentContacPermissionAlert() { }
 }
 
@@ -401,7 +401,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             }
           let enabled = self.multiSelectContactLimit == 0
                         || self.selectedContacts.count == self.multiSelectContactLimit
-          self.contactDelegate?.enableSendButton(enabled: enabled, selectedContacts: self.selectedContacts)
+          self.contactDelegate?.updateSendButton(enabled: enabled, selectedContacts: self.selectedContacts)
         }
         else {
             //Single selection code
