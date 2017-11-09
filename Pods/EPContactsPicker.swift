@@ -17,7 +17,7 @@ public protocol EPPickerDelegate: class {
     func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
   
     func updateSendButton(enabled: Bool, selectedContacts: [EPContact])
-    func presentContacPermissionAlert()
+    func presentContactPermissionAlert()
 }
 
 public extension EPPickerDelegate {
@@ -27,7 +27,7 @@ public extension EPPickerDelegate {
     func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact]) { }
   
     func updateSendButton(enabled: Bool, selectedContacts: [EPContact]) { }
-    func presentContacPermissionAlert() { }
+    func presentContactPermissionAlert() { }
 }
 
 typealias ContactsHandler = (_ contacts : [CNContact] , _ error : NSError?) -> Void
@@ -178,7 +178,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         switch CNContactStore.authorizationStatus(for: CNEntityType.contacts) {
             case CNAuthorizationStatus.denied, CNAuthorizationStatus.restricted:
                 //User has denied the current app to access the contacts.
-                self.contactDelegate?.presentContacPermissionAlert()
+                self.contactDelegate?.presentContactPermissionAlert()
             case CNAuthorizationStatus.notDetermined:
                 //This case means the user is prompted for the first time for allowing contacts
                 contactsStore?.requestAccess(for: CNEntityType.contacts, completionHandler: { (granted, error) -> Void in
