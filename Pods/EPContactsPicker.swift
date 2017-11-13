@@ -280,11 +280,8 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                                        value: CNPhoneNumber(stringValue: phoneField))
       contact.phoneNumbers.append(phoneNumber)
       
-      guard let key = self.sortedContactKeys.first,
-        var keysContacts = self.orderedContacts[key] else {
-        return
-      }
-      
+      let key = self.sortedContactKeys.first ?? "#"
+      var keysContacts = self.orderedContacts[key] ?? []
       keysContacts.insert(contact, at: 1)
       self.orderedContacts[key] = keysContacts
       
