@@ -227,8 +227,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                         self.sortedContactKeys.append("#")
                     }
                   
-                  let key = self.sortedContactKeys.first
-                  self.orderedContacts[key!]?.insert(addContact, at: 0)
+                  let key = self.sortedContactKeys.first ?? "#"
+                  var firstContacts = self.orderedContacts[key] ?? []
+                  firstContacts.insert(addContact, at: 0)
+                  self.orderedContacts[key] = firstContacts
                   
                     completion(contactsArray, nil)
                 }
