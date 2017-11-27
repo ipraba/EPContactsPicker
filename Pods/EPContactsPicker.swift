@@ -413,6 +413,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
 				}
 			})
         }
+      self.resultSearchController.dismiss(animated: true, completion: nil)
     }
     
     override open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
