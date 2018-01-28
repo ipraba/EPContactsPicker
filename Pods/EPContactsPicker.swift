@@ -49,6 +49,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
+    // Customizable
+    var contactsAccessMessage: String? /// This is the message that the user will see when we need to request access for contacts
+    
     // MARK: - Lifecycle Methods
     
     override open func viewDidLoad() {
@@ -155,8 +158,11 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 //User has denied the current app to access the contacts.
                 
                 let productName = Bundle.main.infoDictionary!["CFBundleName"]!
-                
-                let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertControllerStyle.alert)
+                var message: String = "\(productName) does not have access to contacts. Kindly enable it in privacy settings."
+                if(self.contactsAccessMessage != nil) {
+                    message = self.contactsAccessMessage!
+                }
+                let alert = UIAlertController(title: "Unable to access contacts", message: message, preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {  action in
                     completion([], error)
                     self.dismiss(animated: true, completion: {
@@ -164,6 +170,10 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                     })
                 })
                 alert.addAction(okAction)
+                // Quick link for the user to reach the app's settings.
+                alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { action in
+                    UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+                })
                 self.present(alert, animated: true, completion: nil)
             
             case CNAuthorizationStatus.notDetermined:
