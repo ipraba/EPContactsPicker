@@ -50,7 +50,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
     // Customizable
-    var contactsAccessMessage: String? /// This is the message that the user will see when we need to request access for contacts
+    public var contactsAccessMessage: String? /// This is the message that the user will see when we need to request access for contacts
     
     // MARK: - Lifecycle Methods
     
