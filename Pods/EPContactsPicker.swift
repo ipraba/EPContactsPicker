@@ -14,6 +14,7 @@ public protocol EPPickerDelegate: class {
 	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
     func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
+    func epContactPicker(_: EPContactsPicker, didDeselectContact contact: EPContact)
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
 }
 
@@ -133,6 +134,13 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         subtitleCellValue = subtitleCellType
     }
     
+    convenience public init(delegate: EPPickerDelegate?, multiSelection : Bool, subtitleCellType: SubtitleCellValue, selectedContacts: [EPContact]) {
+        self.init(style: .plain)
+        self.multiSelectEnabled = multiSelection
+        self.contactDelegate = delegate
+        self.subtitleCellValue = subtitleCellType
+        self.selectedContacts = selectedContacts
+    }
     
     // MARK: - Contact Operations
   
@@ -294,6 +302,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             //Keeps track of enable=ing and disabling contacts
             if cell.accessoryType == UITableViewCellAccessoryType.checkmark {
                 cell.accessoryType = UITableViewCellAccessoryType.none
+                self.contactDelegate?.epContactPicker(self, didDeselectContact: selectedContact)
                 selectedContacts = selectedContacts.filter(){
                     return selectedContact.contactId != $0.contactId
                 }
