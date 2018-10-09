@@ -13,7 +13,7 @@ DESC
 
   s.license          = 'MIT'
   s.author           = { "Prabaharan" => "mailprabaharan.e@gmail.com" }
-  s.source           = { :git => "https://github.com/jackorapollo/EPContactsPicker.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/LunarLincoln/EPContactsPicker.git", :branch => from-jack }
   s.homepage     = "https://github.com/LunarLincoln"
   s.platform     = :ios, '9.0'
   s.requires_arc = true
