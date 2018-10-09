@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name             = "EPContactsPicker"
-  s.version          = "2.0.2"
+  s.name             = "EPContactsPickerFilterable"
+  s.version          = "1.0.4a"
   s.summary          = "A contacts picker component for iOS written in swift using new contacts framwork"
   s.description      = <<-DESC
 Features
@@ -11,17 +11,13 @@ Features
 5. EPContact object to get the properties of the contacts
 DESC
 
-  s.homepage         = "https://github.com/ipraba/EPContactsPicker"
   s.license          = 'MIT'
   s.author           = { "Prabaharan" => "mailprabaharan.e@gmail.com" }
-  s.source           = { :git => "https://github.com/ipraba/EPContactsPicker.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/jackorapollo/EPContactsPicker.git", :tag => s.version.to_s }
   s.platform     = :ios, '9.0'
   s.requires_arc = true
-  s.source_files = 'Pods'
+  s.source_files = 'EPContactsPicker'
   s.frameworks = 'Contacts', 'ContactsUI'
-  s.resources        = ["Pods/EPContactCell.xib"]
-  s.resource_bundles = {
-    'EPContactsPicker' => ['Pods/**/*.xib']
-    }
+  s.resources        = ["EPContactsPicker/EPContactCell.xib"]
 
 end

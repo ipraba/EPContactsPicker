@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Contacts
 
 class ViewController: UIViewController, EPPickerDelegate {
 
@@ -49,6 +50,10 @@ class ViewController: UIViewController, EPPickerDelegate {
         for contact in contacts {
             print("\(contact.displayName())")
         }
+    }
+    
+    func shouldShowContact(contact: CNContact) -> Bool {
+        return contact.emailAddresses.count > 0
     }
 
 }
