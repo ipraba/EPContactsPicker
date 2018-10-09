@@ -18,7 +18,7 @@ extension String {
             }
             let startIndex = self.characters.index(self.startIndex, offsetBy: r.lowerBound)
             let endIndex = self.characters.index(self.startIndex, offsetBy: r.upperBound - r.lowerBound)
-            return self[(startIndex ..< endIndex)]
+            return String(self[(startIndex ..< endIndex)])
         }
     }
     
