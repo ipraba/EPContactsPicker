@@ -217,7 +217,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 }
             
         @unknown default:
-            <#fatalError()#>
+            print("Undefined error")
         }
     }
     
