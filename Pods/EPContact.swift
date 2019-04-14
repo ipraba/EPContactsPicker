@@ -70,11 +70,11 @@ open class EPContact {
     open func contactInitials() -> String {
         var initials = String()
 		
-		if let firstNameFirstChar = firstName.characters.first {
+		if let firstNameFirstChar = firstName.first {
 			initials.append(firstNameFirstChar)
 		}
 		
-		if let lastNameFirstChar = lastName.characters.first {
+		if let lastNameFirstChar = lastName.first {
 			initials.append(lastNameFirstChar)
 		}
 		
