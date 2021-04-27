@@ -10,7 +10,7 @@ import UIKit
 import Contacts
 
 
-public protocol EPPickerDelegate: class {
+public protocol EPPickerDelegate: AnyObject {
 	func epContactPicker(_: EPContactsPicker, didContactFetchFailed error: NSError)
     func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
@@ -65,7 +65,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         self.resultSearchController = ( {
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self
-            controller.dimsBackgroundDuringPresentation = false
+            controller.obscuresBackgroundDuringPresentation = false
             controller.hidesNavigationBarDuringPresentation = false
             controller.searchBar.sizeToFit()
             controller.searchBar.delegate = self
@@ -136,71 +136,71 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         let error = NSError(domain: "EPContactPickerErrorDomain", code: 1, userInfo: [NSLocalizedDescriptionKey: "No Contacts Access"])
         
         switch CNContactStore.authorizationStatus(for: CNEntityType.contacts) {
-            case CNAuthorizationStatus.denied, CNAuthorizationStatus.restricted:
-                //User has denied the current app to access the contacts.
-                
-                let productName = Bundle.main.infoDictionary!["CFBundleName"]!
-                
-                let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {  action in
-                    completion([], error)
-                    self.dismiss(animated: true, completion: {
-                        self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
+        case CNAuthorizationStatus.notDetermined:
+            //This case means the user is prompted for the first time for allowing contacts
+            contactsStore?.requestAccess(for: CNEntityType.contacts, completionHandler: { (granted, error) -> Void in
+                //At this point an alert is provided to the user to provide access to contacts. This will get invoked if a user responds to the alert
+                if  (!granted ){
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        completion([], error! as NSError?)
                     })
-                })
-                alert.addAction(okAction)
-                self.present(alert, animated: true, completion: nil)
-            
-            case CNAuthorizationStatus.notDetermined:
-                //This case means the user is prompted for the first time for allowing contacts
-                contactsStore?.requestAccess(for: CNEntityType.contacts, completionHandler: { (granted, error) -> Void in
-                    //At this point an alert is provided to the user to provide access to contacts. This will get invoked if a user responds to the alert
-                    if  (!granted ){
-                        DispatchQueue.main.async(execute: { () -> Void in
-                            completion([], error! as NSError?)
-                        })
-                    }
-                    else{
-                        self.getContacts(completion)
-                    }
-                })
-            
-            case  CNAuthorizationStatus.authorized:
-                //Authorization granted by user for this app.
-                var contactsArray = [CNContact]()
-                
-                let contactFetchRequest = CNContactFetchRequest(keysToFetch: allowedContactKeys())
-                
-                do {
-                    try contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
-                        //Ordering contacts based on alphabets in firstname
-                        contactsArray.append(contact)
-                        var key: String = "#"
-                        //If ordering has to be happening via family name change it here.
-                        if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
-                            key = firstLetter.uppercased()
-                        }
-                        var contacts = [CNContact]()
-                        
-                        if let segregatedContact = self.orderedContacts[key] {
-                            contacts = segregatedContact
-                        }
-                        contacts.append(contact)
-                        self.orderedContacts[key] = contacts
+                }
+                else{
+                    self.getContacts(completion)
+                }
+            })
 
-                    })
-                    self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
-                    if self.sortedContactKeys.first == "#" {
-                        self.sortedContactKeys.removeFirst()
-                        self.sortedContactKeys.append("#")
+        case  CNAuthorizationStatus.authorized:
+            //Authorization granted by user for this app.
+            var contactsArray = [CNContact]()
+
+            let contactFetchRequest = CNContactFetchRequest(keysToFetch: allowedContactKeys())
+
+            do {
+                try contactsStore?.enumerateContacts(with: contactFetchRequest, usingBlock: { (contact, stop) -> Void in
+                    //Ordering contacts based on alphabets in firstname
+                    contactsArray.append(contact)
+                    var key: String = "#"
+                    //If ordering has to be happening via family name change it here.
+                    if let firstLetter = contact.givenName[0..<1] , firstLetter.containsAlphabets() {
+                        key = firstLetter.uppercased()
                     }
-                    completion(contactsArray, nil)
+                    var contacts = [CNContact]()
+
+                    if let segregatedContact = self.orderedContacts[key] {
+                        contacts = segregatedContact
+                    }
+                    contacts.append(contact)
+                    self.orderedContacts[key] = contacts
+
+                })
+                self.sortedContactKeys = Array(self.orderedContacts.keys).sorted(by: <)
+                if self.sortedContactKeys.first == "#" {
+                    self.sortedContactKeys.removeFirst()
+                    self.sortedContactKeys.append("#")
                 }
-                //Catching exception as enumerateContactsWithFetchRequest can throw errors
-                catch let error as NSError {
-                    print(error.localizedDescription)
-                }
-            
+                completion(contactsArray, nil)
+            }
+            //Catching exception as enumerateContactsWithFetchRequest can throw errors
+            catch let error as NSError {
+                print(error.localizedDescription)
+            }
+
+        case CNAuthorizationStatus.denied, CNAuthorizationStatus.restricted: fallthrough
+        @unknown default:
+            //User has denied the current app to access the contacts.
+
+            let productName = Bundle.main.infoDictionary!["CFBundleName"]!
+
+            let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {  action in
+                completion([], error)
+                self.dismiss(animated: true, completion: {
+                    self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
+                })
+            })
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -296,7 +296,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     override open func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if resultSearchController.isActive { return 0 }
         tableView.scrollToRow(at: IndexPath(row: 0, section: index), at: UITableView.ScrollPosition.top , animated: false)        
-        return sortedContactKeys.index(of: title)!
+        return sortedContactKeys.firstIndex(of: title)!
     }
     
     override  open func sectionIndexTitles(for tableView: UITableView) -> [String]? {
